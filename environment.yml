@@ -1,0 +1,16 @@
+name: kick-help
+channels:
+  - defaults
+dependencies:
+  - pip=9.0.1=py36h226ae91_4
+  - python=3.6.4=h6538335_1
+  - pip:
+    - msgpack==0.5.4
+    - pandas
+    - tensorflow
+    - keras
+    - librosa
+    - matplotlib
+    - h5py
+    
+prefix: C:\Users\lewys\Miniconda3\envs\kick-help
