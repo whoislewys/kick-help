@@ -4,13 +4,15 @@ import os
 import csv
 
 #data_folder = os.path.join(os.getcwd(), '')
-dataset1_path = r'C:\Users\lewys\PycharmProjects\kick-help\data\ks-projects-201612.csv'
+data_folder = os.path.join(os.pardir, 'data')
+print(data_folder)
+dataset1_path = os.path.join(data_folder, 'ks-projects-201612.csv')
+dataset2_path = os.path.join(data_folder, 'ks-projects-201801.csv')
 
-#dataset1 = pd.read_csv(dataset1_path)
 with open(dataset1_path, 'r') as csvfile:
     #dataset1 = pd.read_csv(dataset1_path)
     dataset1 = csv.reader(csvfile)
     for row in dataset1:
-        print(', '.join(row))
+        row = row
+        # print(', '.join(row))
 
-#print(type(dataset1))
