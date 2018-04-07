@@ -13,7 +13,7 @@ import numpy as np
 data_folder = os.path.join(os.pardir, 'data')
 dataset1_path = os.path.join(data_folder, 'ks-projects-201612.csv')
 dataset2_path = os.path.join(data_folder, 'ks-projects-201801.csv')
-word_embeddings_path = os.path.join(data_folder, '/glove.6B/glove.6B.50d.txt')
+word_embeddings_path = os.path.join(data_folder, 'glove.6B', 'glove.6B.50d.txt')
 print(word_embeddings_path)
 
 
@@ -43,9 +43,6 @@ def scrape_from_csv(dataset_path):
                     num_label = label_to_number(text_label)
                     Y.append(num_label)
     return X, Y
-
-
-
 
 
 def scrape_from_url(project_url):
@@ -135,8 +132,8 @@ def load_word2vec_embeddings():
     # https://machinelearningmastery.com/develop-word-embeddings-python-gensim/
     # http://www.orbifold.net/default/2017/01/10/embedding-and-tokenizer-in-keras/
     embeddings_index = {}
-    glove_data = '/Users/Swa/Desktop/AIML/Glove/'
-    f = open(glove_data)
+    glove_data = word_embeddings_path
+    f = open(glove_data, encoding='utf-8')
     for line in f:
         values = line.split()
         word = values[0]
@@ -147,7 +144,7 @@ def load_word2vec_embeddings():
     return embeddings_index
 
 
-def train():
+def train(embeddings_index):
     import keras
     from keras.preprocessing.text import Tokenizer
     from keras.preprocessing.text import Tokenizer
@@ -162,10 +159,33 @@ def train():
     So we will embed kickstarter data into ~10 dimensional vector spaces
     To make a prediction, we will either use a nearest neighbor algorithm (pribably much easier in these low dimensions) or a neural net
     '''
+
+    # The embedding_matrix matrix maps words to vectors in the specified embedding dimension (here 10):
+    embedding_dimension = 10
+    word_index = Tokenizer.word_index
+
+    embedding_matrix = np.zeros((len(word_index) + 1, embedding_dimension))
+    for word, i in word_index.items():
+        embedding_vector = embeddings_index.get(word)
+        if embedding_vector is not None:
+            # words not found in embedding index will be all-zeros.
+            embedding_matrix[i] = embedding_vector[:embedding_dimension]
+
+    #Now you have an embedding matrix of 19 words into dimension 10:
+    print('Embedding matrix shape: ', embedding_matrix.shape)
+
+    # define a new keras Embedding layer
+    embedding_layer = Embedding(embedding_matrix.shape[0], embedding_matrix.shape[1], weights=[embedding_matrix], input_length=12)
+
     texts = ["The sun is shining in June!","September is grey.","Life is beautiful in August.","I like it","This and other things?"]
-    X = Tokenizer.texts_to_matrix(texts)
-    y = [1, 0, 0, 0, 0]
+
+
+    # TODO: resolve missing word_index
     vocab_size = len(Tokenizer.word_index) + 1
+    X = Tokenizer.texts_to_sequences(texts)
+    X = pad_sequences(X, maxlen=12)
+
+
     model = Sequential()
     model.add(Dense(2, input_dim=vocab_size))
     model.add(Dense(1, activation='sigmoid'))
@@ -175,9 +195,10 @@ def train():
 
 if __name__ == '__main__':
     embeddings_index = load_word2vec_embeddings()
-
+    train(embeddings_index)
     train_x, train_y = scrape_from_csv(dataset_path=dataset1_path)
     print("Data: {}\nLabels: {}".format(train_x, train_y))
+
     # test_x, test_y = scrape_from_csv(dataset_path=dataset1_path)
 
 '''
