@@ -105,14 +105,14 @@ input.question + label > span {
   transition: top 0.2s ease, font-size 0.2s ease, color 0.2s ease;
 }
 
-input[type="submit"] {
+input[type="button"] {
   -webkit-transition: opacity 0.2s ease, background 0.2s ease;
   transition: opacity 0.2s ease, background 0.2s ease;
   position: absolute;
   right: 0;
   top: 0;
   bottom: 0;
-  opacity: 0;
+  /*opacity: 0;*/
   margin: auto 0 auto 0;
   padding: 10px;
   cursor: pointer;
@@ -121,15 +121,15 @@ input[type="submit"] {
   border: 1px solid black;
 }
 
-input[type="submit"]:hover {
+input[type="button"]:hover {
   background: #EEE;
 }
 
-input[type="submit"]:active {
+input[type="button"]:active {
   background: #999;
 }
 
-input.question:valid ~ input[type="submit"] {
+input.question:valid ~ input[type="button"] {
   -webkit-animation: appear 1s forwards;
   animation: appear 1s forwards;
 }
