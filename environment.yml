@@ -12,5 +12,6 @@ dependencies:
     - librosa
     - matplotlib
     - h5py
+    - lxml
     
 prefix: C:\Users\lewys\Miniconda3\envs\kick-help
