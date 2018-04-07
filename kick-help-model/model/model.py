@@ -20,7 +20,7 @@ data_folder = os.path.join(os.pardir, 'data')
 dataset1_path = os.path.join(data_folder, 'ks-projects-201612.csv')
 dataset2_path = os.path.join(data_folder, 'ks-projects-201801.csv')
 word_embeddings_path = os.path.join(data_folder, 'glove.6B', 'glove.6B.50d.txt')
-print(word_embeddings_path)
+# print(word_embeddings_path)
 
 
 def scrape_from_csv(dataset_path):
@@ -161,7 +161,7 @@ def train(train_x, train_y):
         value = np.asarray(values[1:], dtype='float32')
         embeddings_index[word] = value
     f.close()
-    print('Loaded %s word vectors.' % len(embeddings_index))
+    # print('Loaded %s word vectors.' % len(embeddings_index))
 
     texts = ["The sun is shining in June!", "September is grey.", "Life is beautiful in August.", "I like it", "This and other things?"]
     embedding_dimension = 10 # The embedding_matrix maps words to vectors in the specified embedding dimension (here 10):
@@ -183,10 +183,11 @@ def train(train_x, train_y):
     embedding_layer = Embedding(embedding_matrix.shape[0], embedding_matrix.shape[1], weights=[embedding_matrix], input_length=12)
 
     X = tokenizer.texts_to_sequences(texts)
-    print(X)
     X = pad_sequences(X, maxlen=12)
-    y = [1, 0, 0, 0, 0]
-
+    print(X)
+    print(type(X))
+    y = np.array([1, 0, 0, 0, 0])
+    print(type(y))
 
     model = Sequential()
     model.add(embedding_layer)
@@ -195,13 +196,14 @@ def train(train_x, train_y):
     model.layers[0].trainable=False
     model.compile(loss='binary_crossentropy', optimizer='rmsprop')
     # eventually use x_train instead of placeholder X
-    model.fit(X, y=y, batch_size=20, epochs=700, verbose=0, validation_split=0.2, shuffle=True)
+    model.fit(X, y=y, batch_size=20, epochs=700, verbose=1, validation_split=0.2, shuffle=True)
     model.predict(X)
+
 
 if __name__ == '__main__':
     embeddings_index = load_word2vec_embeddings()
     train_x, train_y = scrape_from_csv(dataset_path=dataset1_path)
-    print("Data: {}\nLabels: {}".format(train_x, train_y))
+    #print("Data: {}\nLabels: {}".format(train_x, train_y))
     train(train_x, train_y)
 
     # test_x, test_y = scrape_from_csv(dataset_path=dataset1_path)
