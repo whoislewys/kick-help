@@ -5,6 +5,7 @@ import requests
 import json
 from lxml import html
 from datetime import datetime
+import numpy as np
 #import keras
 #from keras.preprocessing.text import text_to_word_sequence
 
@@ -12,6 +13,8 @@ from datetime import datetime
 data_folder = os.path.join(os.pardir, 'data')
 dataset1_path = os.path.join(data_folder, 'ks-projects-201612.csv')
 dataset2_path = os.path.join(data_folder, 'ks-projects-201801.csv')
+word_embeddings_path = os.path.join(data_folder, '/glove.6B/glove.6B.50d.txt')
+print(word_embeddings_path)
 
 
 def scrape_from_csv(dataset_path):
@@ -128,7 +131,51 @@ def get_duration(time1, time2):
     return(str(t3.total_seconds()))
 
 
+def load_word2vec_embeddings():
+    # https://machinelearningmastery.com/develop-word-embeddings-python-gensim/
+    # http://www.orbifold.net/default/2017/01/10/embedding-and-tokenizer-in-keras/
+    embeddings_index = {}
+    glove_data = '/Users/Swa/Desktop/AIML/Glove/'
+    f = open(glove_data)
+    for line in f:
+        values = line.split()
+        word = values[0]
+        value = np.asarray(values[1:], dtype='float32')
+        embeddings_index[word] = value
+    f.close()
+    print('Loaded %s word vectors.' % len(embeddings_index))
+    return embeddings_index
+
+
+def train():
+    import keras
+    from keras.preprocessing.text import Tokenizer
+    from keras.preprocessing.text import Tokenizer
+    from keras.preprocessing.sequence import pad_sequences
+    from keras.preprocessing import sequence
+    from keras.models import Sequential
+    from keras.layers.core import Dense, Activation, Flatten
+    from keras.layers.wrappers import TimeDistributed
+    from keras.layers.embeddings import Embedding
+    '''
+    We are assuming that effective kickstarter campaigns will have similar writing techniques
+    So we will embed kickstarter data into ~10 dimensional vector spaces
+    To make a prediction, we will either use a nearest neighbor algorithm (pribably much easier in these low dimensions) or a neural net
+    '''
+    texts = ["The sun is shining in June!","September is grey.","Life is beautiful in August.","I like it","This and other things?"]
+    X = Tokenizer.texts_to_matrix(texts)
+    y = [1, 0, 0, 0, 0]
+    vocab_size = len(Tokenizer.word_index) + 1
+    model = Sequential()
+    model.add(Dense(2, input_dim=vocab_size))
+    model.add(Dense(1, activation='sigmoid'))
+    model.compile(loss='binary_crossentropy', optimizer='rmsprop')
+    model.fit(X, y=y, batch_size=200, nb_epoch=700, verbose=0, validation_split=0.2, show_accuracy=True, shuffle=True)
+
+
 if __name__ == '__main__':
+    embeddings_index = load_word2vec_embeddings()
+
     train_x, train_y = scrape_from_csv(dataset_path=dataset1_path)
     print("Data: {}\nLabels: {}".format(train_x, train_y))
     # test_x, test_y = scrape_from_csv(dataset_path=dataset1_path)
