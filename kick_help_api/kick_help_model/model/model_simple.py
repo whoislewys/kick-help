@@ -14,12 +14,23 @@ dataset1_path = os.path.join(data_folder, 'ks-projects-201612.csv')
 dataset2_path = os.path.join(data_folder, 'ks-projects-201801.csv')
 
 
-def category_to_int(kickstarter_category):
-    '''
-    change kickstarter categories to integers
-    '''
-    category_number = 0
-    return category_number
+def category_to_int(cat):
+    cat_enum = ['games',
+                'design',
+                'technology',
+                'film & video',
+                'music',
+                'fashion',
+                'publishing',
+                'food',
+                'art',
+                'comics',
+                'theater',
+                'photography',
+                'crafts',
+                'dance',
+                'journalism']
+    return cat_enum.index(cat)
 
 
 def train(train_x, train_y):
@@ -40,7 +51,6 @@ def preprocess(text):
     return
 
 
-
 if __name__ == '__main__':
     # train_x, train_y = scrape_from_csv(dataset_path=dataset1_path)
     # print("Data: {}\nLabels: {}".format(train_x, train_y))
@@ -53,7 +63,8 @@ if __name__ == '__main__':
     for project in raw_train_data:
         #description_values = (wm.get_word_values((project['description']), word_model))
         for param in raw_train_data:
-            #proj_category = np.float32(category_to_int(cat=param['category']))
+            proj_category = np.float32(category_to_int(cat=param['category']))
+            print('proj category: ', proj_category)
             proj_goal = param['goal']
             proj_duration = param['duration']
             proj_raised = param['raised']
@@ -61,6 +72,13 @@ if __name__ == '__main__':
             features.append(proj_duration)
             features.append(proj_raised)
             print(features)
+            project_category = category_to_int(cat=param['category']).astype(np.float32)
+            features.append(param['category'])
+            # category (cast to int)
+            # goal
+            # duration float seconds
+            # label = raised
+
     train_x = np.array(features)
     train_y = []
     train_y = keras.utils.to_categorical(raw_train_labels, num_classes)
