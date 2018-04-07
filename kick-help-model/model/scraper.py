@@ -6,26 +6,32 @@ import json
 from lxml import html
 from datetime import datetime
 
-#data_folder = os.path.join(os.getcwd(), '')
+# data_folder = os.path.join(os.getcwd(), '')
 data_folder = os.path.join(os.pardir, 'data')
 dataset1_path = os.path.join(data_folder, 'ks-projects-201612.csv')
 dataset2_path = os.path.join(data_folder, 'ks-projects-201801.csv')
 
 def scrape_from_csv(dataset_path):
-    # this will search for every path
+    # open data
     with open(dataset_path, 'r') as csvfile:
         dataset1 = csv.reader(csvfile)
+        # iterate through projects
         for counter, row in enumerate(dataset1):
+            # ignore header
             if counter == 0:
                 continue
             elif counter == 20:
                 break
+            # search for project name
             name = row[1]
             name_pattern = re.compile(name)
             search = requests.get('http://www.kickstarter.com/projects/search.json?search=&term={}'.format(name))
             search_response = search.json()
+            # iterate through results
             for project in search_response['projects']:
+                # if projects match
                 if name_pattern.match(project['name']):
+                    # scrape
                     project_url = project['urls']['web']['project']
                     scrape_from_url(project_url)
 
@@ -41,11 +47,9 @@ def scrape_from_url(project_url):
             'description': '',
             'risks': '',
             'name': ''}
-
     # get html tree
     page = requests.get(project_url)
     tree = html.fromstring(page.content)
-
     # get content
     try:
         data['category'] = tree.xpath('//a[@class="nowrap navy-700 flex items-center medium mr3 type-12"]/text()')[0]
@@ -85,19 +89,19 @@ def scrape_from_url(project_url):
         data['name'] = tree.xpath('//a[@class="medium navy-700 remote_modal_dialog"]/text()')[0]
     except:
         pass
-    
     # clean
     for key in data:
         data[key] = data[key].replace('\n', ' ').strip()
-    
     # return
     return(data)
 
 def get_duration(time1, time2):
-    # year, month, day, hour=0, minute=0, second=0, microsecond=0,
+    # convert string to datetime
     t1 = datetime.strptime(time1[0:18], '%Y-%m-%dT%H:%M:%S')
     t2 = datetime.strptime(time2[0:18], '%Y-%m-%dT%H:%M:%S')
+    # get delta
     t3 = t2 - t1
+    # return
     return(str(t3.total_seconds()))
 
 if __name__ == '__main__':
