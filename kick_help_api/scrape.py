@@ -56,7 +56,7 @@ def scrape_from_url(project_url):
     tree = html.fromstring(page.content)
     # get content
     try:
-        data['category'] = tree.xpath('//a[@class="nowrap navy-700 flex items-center medium mr3 type-12"]/text()')[0]
+        data['category'] = tree.xpath('//a[@class="nowrap navy-700 flex items-center medium mr3 type-12"]/text()')[0].lower()
     except:
         pass
     try:
