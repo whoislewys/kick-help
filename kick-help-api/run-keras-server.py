@@ -7,6 +7,7 @@ model = None
 
 def load_model():
 	global model
+	global word_model
 	# define model
 
 @app.route('/predict', methods = ['GET', 'POST'])
