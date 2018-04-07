@@ -18,7 +18,7 @@ def scrape_from_csv(dataset_path):
         for counter, row in enumerate(dataset1):
             if counter == 0:
                 continue
-            elif counter == 4:
+            elif counter == 20:
                 break
             name = row[1]
             name_pattern = re.compile(name)
@@ -37,9 +37,9 @@ def scrape_from_url(project_url):
             'title': '',
             'duration': '',
             'goal': '',
+            'raised': '',
             'description': '',
             'risks': '',
-            'biography': '',
             'name': ''}
 
     # get html tree
@@ -47,19 +47,51 @@ def scrape_from_url(project_url):
     tree = html.fromstring(page.content)
 
     # get content
-    data['category'] = tree.xpath('//a[@class="nowrap navy-700 flex items-center medium mr3 type-12"]/text()')[0]
-    data['title'] = tree.xpath('//div[@class="col-20-24 col-lg-15-24 hide block-md order-2-md"]//h2/text()')[0]
-    data['blurb'] = tree.xpath('//div[@class="col-20-24 col-lg-15-24 hide block-md order-2-md"]//p/text()')[0]
+    try:
+        data['category'] = tree.xpath('//a[@class="nowrap navy-700 flex items-center medium mr3 type-12"]/text()')[0]
+    except:
+        pass
+    try:
+        data['title'] = tree.xpath('//div[@class="col-20-24 col-lg-15-24 hide block-md order-2-md"]//h2/text()')[0]
+    except:
+        pass
+    try:
+        data['blurb'] = tree.xpath('//div[@class="col-20-24 col-lg-15-24 hide block-md order-2-md"]//p/text()')[0]
+    except:
+        pass
+    try:
+        time1 = tree.xpath('//div[@class="NS_campaigns__funding_period"]//p//time[1]/@datetime')[0]
+        time2 = tree.xpath('//div[@class="NS_campaigns__funding_period"]//p//time[2]/@datetime')[0]
+        data['duration'] = get_duration(time1, time2)
+    except:
+        pass
+    try:
+        data['goal'] = tree.xpath('//div[@id="pledged"]/@data-goal')[0]
+    except:
+        pass
+    try:
+        data['raised'] = tree.xpath('//div[@id="pledged"]/@data-pledged')[0]
+    except:
+        pass
+    try:
+        data['description'] = ''.join(tree.xpath('//div[@class="full-description js-full-description responsive-media formatted-lists"]//p/text()'))
+    except:
+        pass
+    try:
+        data['risks'] = ''.join(tree.xpath('//div[@class="mb3 mb10-sm mb3 js-risks"]//p/text()'))
+    except:
+        pass
+    try:
+        data['name'] = tree.xpath('//a[@class="medium navy-700 remote_modal_dialog"]/text()')[0]
+    except:
+        pass
     
-    
-    time1 = tree.xpath('//div[@class="NS_campaigns__funding_period"]//p//time[1]/@datetime')[0]
-    time2 = tree.xpath('//div[@class="NS_campaigns__funding_period"]//p//time[2]/@datetime')[0]
-    data['duration'] = get_duration(time1, time2)
-
     # clean
     for key in data:
         data[key] = data[key].replace('\n', ' ').strip()
-        print(data[key])
+    
+    # return
+    return(data)
 
 def get_duration(time1, time2):
     # year, month, day, hour=0, minute=0, second=0, microsecond=0,
