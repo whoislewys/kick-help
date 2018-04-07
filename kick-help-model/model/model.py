@@ -37,7 +37,6 @@ def scrape_from_csv(dataset_path):
                     project_url = project['urls']['web']['project']
                     scrape_results = scrape_from_url(project_url)
                     X.append(scrape_results)
-
                     num_label = label_to_number(text_label)
                     Y.append(num_label)
     return X, Y
@@ -130,8 +129,9 @@ def get_duration(time1, time2):
 
 
 if __name__ == '__main__':
-    X, Y = scrape_from_csv(dataset_path=dataset1_path)
-    print("Data: {}\n Label: {}".format(X, Y))
+    train_x, train_y = scrape_from_csv(dataset_path=dataset1_path)
+    print("Data: {}\nLabels: {}".format(train_x, train_y))
+    # test_x, test_y = scrape_from_csv(dataset_path=dataset1_path)
 
 '''
 how to pretty print json:
