@@ -1,9 +1,9 @@
 import os
 import numpy as np
 
-data_folder = os.path.join('kick_help_model', 'data')
+data_folder = os.path.join(os.pardir, 'data')
 word_embeddings_path = os.path.join(data_folder, 'glove.6B', 'glove.6B.50d.txt')
-print(word_embeddings_path)
+# print(word_embeddings_path)
 
 def load_word_model():
     # https://machinelearningmastery.com/develop-word-embeddings-python-gensim/
