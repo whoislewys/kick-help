@@ -17,6 +17,8 @@ def load_model():
 def predict():
 	# get global models
 	global model_simple
+	# get data
+	print(request.args['url'])
 	# predict
 	data = {'success': 0.74}
 	return flask.jsonify(data)
