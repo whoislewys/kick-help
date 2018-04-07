@@ -21,10 +21,15 @@ def load_word_model():
     return word_model
 
 def get_word_values(text, word_model):
-	word_values = []
-	text = text.split()
-	for word in text:
-		try:
-			word_model[word]
-		except:
-			pass
+    word_values = []
+    text = text.split()
+    for word in text:
+        try:
+            word_values.append(word_model[word])
+        except:
+            pass
+    return word_values
+
+
+word_model = load_word_model()
+print(get_word_values('hello test happy', word_model))
