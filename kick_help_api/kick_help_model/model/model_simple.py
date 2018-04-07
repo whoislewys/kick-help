@@ -11,6 +11,13 @@ dataset1_path = os.path.join(data_folder, 'ks-projects-201612.csv')
 dataset2_path = os.path.join(data_folder, 'ks-projects-201801.csv')
 
 
+def category_to_int(kickstarter_category):
+    '''
+    change kickstarter categories to integers
+    '''
+    category_number = 0
+    return category_number
+
 
 def train(train_x, train_y):
     return
@@ -27,13 +34,20 @@ if __name__ == '__main__':
     num_classes = 2
     raw_train_data, raw_train_labels = scrape.scrape_from_csv(dataset1_path)
 
-    features = np.empty((0, 50), dtype='float32')
+    features = []
+    #features = np.empty((0, 50), dtype='float32')
     labels = np.empty(0, dtype=np.int)
     for project in raw_train_data:
         #description_values = (wm.get_word_values((project['description']), word_model))
         for param in raw_train_data:
-            print(param)
+            project_category = category_to_int(kickstarter_category=param['category']).astype(np.float32)
 
+
+            features.append(param['category'])
+            # category (cast to int)
+            # goal
+            # duration float seconds
+            # label = raised
     train_x = np.array(features)
     train_y = []
     #train_y = keras.utils.to_categorical(raw_train_labels, num_classes)
