@@ -9,11 +9,10 @@ def load_model():
 	global model
 	# define model
 
-@app.route('/predict', methods = ['POST'])
+@app.route('/predict', methods = ['GET', 'POST'])
 def predict():
-	data = {'success': False}
-	if flask.request.method == 'POST':
-		data['success'] = True
+	data = {'status': 'Null'}
+	data['status'] = flask.request.method
 
 	return flask.jsonify(data)
 
