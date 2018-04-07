@@ -2,9 +2,9 @@ import numpy as np
 import flask
 import io
 import os
-import sys
 import scrape
-import word_model as wm
+import sys
+from kick_help_model.model.word_model import word_model as wm
 
 
 app = flask.Flask(__name__)
