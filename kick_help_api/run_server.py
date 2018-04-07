@@ -1,10 +1,11 @@
 import numpy as np
+from flask import request
 import flask
 import io
 import os
 import scrape
 import sys
-from kick_help_model.model.word_model import word_model as wm
+from kick_help_model.model import word_model as wm
 
 
 app = flask.Flask(__name__)
@@ -19,8 +20,7 @@ def load_model():
 @app.route('/predict', methods = ['GET', 'POST'])
 def predict():
 	url = request.data
-
-
+	data = wm.get_word_values('hello', word_model)
 	return flask.jsonify(data)
 
 if __name__ == '__main__':

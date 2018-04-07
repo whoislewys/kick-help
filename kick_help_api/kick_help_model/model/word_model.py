@@ -1,7 +1,7 @@
 import os
 import numpy as np
 
-data_folder = os.path.join(os.pardir, 'data')
+data_folder = os.path.join('kick_help_model', 'data')
 word_embeddings_path = os.path.join(data_folder, 'glove.6B', 'glove.6B.50d.txt')
 print(word_embeddings_path)
 
@@ -29,7 +29,3 @@ def get_word_values(text, word_model):
         except:
             pass
     return word_values
-
-
-word_model = load_word_model()
-print(get_word_values('hello test happy', word_model))
