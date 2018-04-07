@@ -11,12 +11,23 @@ dataset1_path = os.path.join(data_folder, 'ks-projects-201612.csv')
 dataset2_path = os.path.join(data_folder, 'ks-projects-201801.csv')
 
 
-def category_to_int(kickstarter_category):
-    '''
-    change kickstarter categories to integers
-    '''
-    category_number = 0
-    return category_number
+def category_to_int(cat):
+    cat_enum = {'games',
+                'design',
+                'technology',
+                'film & video',
+                'music',
+                'fashion',
+                'publishing',
+                'food',
+                'art',
+                'comics',
+                'theater',
+                'photography',
+                'crafts',
+                'dance',
+                'journalism'}
+    return cat_enum.index(cat)
 
 
 def train(train_x, train_y):
@@ -25,7 +36,6 @@ def train(train_x, train_y):
 
 def preprocess(text):
     return
-
 
 
 if __name__ == '__main__':
@@ -40,7 +50,7 @@ if __name__ == '__main__':
     for project in raw_train_data:
         #description_values = (wm.get_word_values((project['description']), word_model))
         for param in raw_train_data:
-            project_category = category_to_int(kickstarter_category=param['category']).astype(np.float32)
+            project_category = category_to_int(cat=param['category']).astype(np.float32)
 
 
             features.append(param['category'])
