@@ -30,7 +30,11 @@ def category_to_int(cat):
                 'crafts',
                 'dance',
                 'journalism']
-    return cat_enum.index(cat)
+    try:
+        var = cat_enum.index(cat)
+    except:
+        var = -1
+    return var
 
 
 def train(train_x, train_y):
