@@ -1,6 +1,11 @@
 import numpy as np
 import flask
 import io
+import os
+import sys
+import scrape
+import word_model as wm
+
 
 app = flask.Flask(__name__)
 model = None
@@ -9,11 +14,12 @@ def load_model():
 	global model
 	global word_model
 	# define model
+	word_model = wm.load_word_model()
 
 @app.route('/predict', methods = ['GET', 'POST'])
 def predict():
-	data = {'status': 'Null'}
-	data['status'] = flask.request.method
+	url = request.data
+
 
 	return flask.jsonify(data)
 
