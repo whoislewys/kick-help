@@ -1,0 +1,253 @@
+{
+  "projects": [
+    {
+      "id": 966836305,
+      "photo": {
+        "key": "assets/012/039/475/152f901792f3372fd0ac3497c4f2abcd_original.jpg",
+        "full": "https://ksr-ugc.imgix.net/assets/012/039/475/152f901792f3372fd0ac3497c4f2abcd_original.jpg?crop=faces&w=560&h=315&fit=crop&v=1463726408&auto=format&q=92&s=0b1b82da1566520fb51e3e9c4fb71adf",
+        "ed": "https://ksr-ugc.imgix.net/assets/012/039/475/152f901792f3372fd0ac3497c4f2abcd_original.jpg?crop=faces&w=352&h=198&fit=crop&v=1463726408&auto=format&q=92&s=ad07ebcfc762b3c32627fc1d13424f18",
+        "med": "https://ksr-ugc.imgix.net/assets/012/039/475/152f901792f3372fd0ac3497c4f2abcd_original.jpg?crop=faces&w=272&h=153&fit=crop&v=1463726408&auto=format&q=92&s=9637ad01baa078f5e8b8fd3d0895a3aa",
+        "little": "https://ksr-ugc.imgix.net/assets/012/039/475/152f901792f3372fd0ac3497c4f2abcd_original.jpg?crop=faces&w=208&h=117&fit=crop&v=1463726408&auto=format&q=92&s=c26b65f970a19a8a7ab6de7dfec33840",
+        "small": "https://ksr-ugc.imgix.net/assets/012/039/475/152f901792f3372fd0ac3497c4f2abcd_original.jpg?crop=faces&w=160&h=90&fit=crop&v=1463726408&auto=format&q=92&s=e585ae8b1deb844070b8b7d7a283be35",
+        "thumb": "https://ksr-ugc.imgix.net/assets/012/039/475/152f901792f3372fd0ac3497c4f2abcd_original.jpg?crop=faces&w=48&h=27&fit=crop&v=1463726408&auto=format&q=92&s=5e0c66e4e016a822637f3b0474d12d18",
+        "1024x576": "https://ksr-ugc.imgix.net/assets/012/039/475/152f901792f3372fd0ac3497c4f2abcd_original.jpg?crop=faces&w=1024&h=576&fit=crop&v=1463726408&auto=format&q=92&s=bf9f4154f6d201608b17e0f7b29e6b91",
+        "1536x864": "https://ksr-ugc.imgix.net/assets/012/039/475/152f901792f3372fd0ac3497c4f2abcd_original.jpg?crop=faces&w=1552&h=873&fit=crop&v=1463726408&auto=format&q=92&s=850671161ead6cbc6d6f1dfede17c5f9"
+      },
+      "name": "Streets of Adelaide (Old Soldier) A Song for the ANZACS",
+      "blurb": "PLEASE SUPPORT! LAST FEW DAYS! Video will be available this week!\nThis song is a tribute to my father & all ANZACS",
+      "goal": 2500.0,
+      "pledged": 2506.0,
+      "state": "successful",
+      "slug": "streets-of-adelaide-old-soldier-going-home-a-song",
+      "disable_communication": false,
+      "country": "AU",
+      "currency": "AUD",
+      "currency_symbol": "$",
+      "currency_trailing_code": true,
+      "deadline": 1427436000,
+      "state_changed_at": 1427436014,
+      "created_at": 1424132369,
+      "launched_at": 1424213332,
+      "staff_pick": false,
+      "is_starrable": false,
+      "backers_count": 40,
+      "static_usd_rate": 0.77856456,
+      "usd_pledged": "1951.08278736",
+      "converted_pledged_amount": 1955,
+      "fx_rate": 0.76779205,
+      "current_currency": "USD",
+      "usd_type": "domestic",
+      "creator": {
+        "id": 1976351391,
+        "name": "Nyck Jeanes",
+        "is_registered": true,
+        "chosen_currency": null,
+        "avatar": {
+          "thumb": "https://ksr-ugc.imgix.net/assets/009/540/256/0f04fb2d52205341a42b4808750e0454_original.jpg?w=40&h=40&fit=crop&v=1461602006&auto=format&q=92&s=aa845af3f53f6bd5a74d73cf9d3d5f51",
+          "small": "https://ksr-ugc.imgix.net/assets/009/540/256/0f04fb2d52205341a42b4808750e0454_original.jpg?w=160&h=160&fit=crop&v=1461602006&auto=format&q=92&s=ed56579273b80309c59bf6ee74104a4b",
+          "medium": "https://ksr-ugc.imgix.net/assets/009/540/256/0f04fb2d52205341a42b4808750e0454_original.jpg?w=160&h=160&fit=crop&v=1461602006&auto=format&q=92&s=ed56579273b80309c59bf6ee74104a4b"
+        },
+        "urls": {
+          "web": {
+            "user": "https://www.kickstarter.com/profile/1976351391"
+          },
+          "api": {
+            "user": "https://api.kickstarter.com/v1/users/1976351391?signature=1523177403.87aed0110c93cf11adb9885f7c26908dd2e7357c"
+          }
+        }
+      },
+      "location": {
+        "id": 1094857,
+        "name": "Byron Bay",
+        "slug": "byron-bay-au",
+        "short_name": "Byron Bay, AU",
+        "displayable_name": "Byron Bay, AU",
+        "localized_name": "Byron Bay",
+        "country": "AU",
+        "state": "NSW",
+        "type": "Town",
+        "is_root": false,
+        "urls": {
+          "web": {
+            "discover": "https://www.kickstarter.com/discover/places/byron-bay-au",
+            "location": "https://www.kickstarter.com/locations/byron-bay-au"
+          },
+          "api": {
+            "nearby_projects": "https://api.kickstarter.com/v1/discover?signature=1523136685.0bb02814e8f415eec91acf84c59eebb5fc949445&woe_id=1094857"
+          }
+        }
+      },
+      "category": {
+        "id": 14,
+        "name": "Music",
+        "slug": "music",
+        "position": 11,
+        "color": 10878931,
+        "urls": {
+          "web": {
+            "discover": "http://www.kickstarter.com/discover/categories/music"
+          }
+        }
+      },
+      "profile": {
+        "id": 1710357,
+        "project_id": 1710357,
+        "state": "inactive",
+        "state_changed_at": 1425915894,
+        "name": null,
+        "blurb": null,
+        "background_color": null,
+        "text_color": null,
+        "link_background_color": null,
+        "link_text_color": null,
+        "link_text": null,
+        "link_url": null,
+        "show_feature_image": false,
+        "background_image_opacity": 0.8,
+        "should_show_feature_image_section": true,
+        "feature_image_attributes": {
+          "image_urls": {
+            "default": "https://ksr-ugc.imgix.net/assets/012/039/475/152f901792f3372fd0ac3497c4f2abcd_original.jpg?crop=faces&w=1552&h=873&fit=crop&v=1463726408&auto=format&q=92&s=850671161ead6cbc6d6f1dfede17c5f9",
+            "baseball_card": "https://ksr-ugc.imgix.net/assets/012/039/475/152f901792f3372fd0ac3497c4f2abcd_original.jpg?crop=faces&w=560&h=315&fit=crop&v=1463726408&auto=format&q=92&s=0b1b82da1566520fb51e3e9c4fb71adf"
+          }
+        }
+      },
+      "spotlight": true,
+      "urls": {
+        "web": {
+          "project": "https://www.kickstarter.com/projects/1976351391/streets-of-adelaide-old-soldier-going-home-a-song?ref=discovery",
+          "rewards": "https://www.kickstarter.com/projects/1976351391/streets-of-adelaide-old-soldier-going-home-a-song/rewards"
+        }
+      }
+    },
+    {
+      "id": 1000002330,
+      "photo": {
+        "key": "assets/012/215/713/d4f56d166cba8ae2dba02a4b6f32f03d_original.png",
+        "full": "https://ksr-ugc.imgix.net/assets/012/215/713/d4f56d166cba8ae2dba02a4b6f32f03d_original.png?crop=faces&w=560&h=315&fit=crop&v=1463742962&auto=format&q=92&s=bb15ea994387776a44e27c0b951ffd5e",
+        "ed": "https://ksr-ugc.imgix.net/assets/012/215/713/d4f56d166cba8ae2dba02a4b6f32f03d_original.png?crop=faces&w=352&h=198&fit=crop&v=1463742962&auto=format&q=92&s=456c23ed0aff439198edc427dde6b1a1",
+        "med": "https://ksr-ugc.imgix.net/assets/012/215/713/d4f56d166cba8ae2dba02a4b6f32f03d_original.png?crop=faces&w=272&h=153&fit=crop&v=1463742962&auto=format&q=92&s=a806bf8c4b49bd3013235d59500c0304",
+        "little": "https://ksr-ugc.imgix.net/assets/012/215/713/d4f56d166cba8ae2dba02a4b6f32f03d_original.png?crop=faces&w=208&h=117&fit=crop&v=1463742962&auto=format&q=92&s=df4ef22f2b7fb80cfd36f9b91f4bbb30",
+        "small": "https://ksr-ugc.imgix.net/assets/012/215/713/d4f56d166cba8ae2dba02a4b6f32f03d_original.png?crop=faces&w=160&h=90&fit=crop&v=1463742962&auto=format&q=92&s=433dff1a9f64b27f734b1b703eca82ae",
+        "thumb": "https://ksr-ugc.imgix.net/assets/012/215/713/d4f56d166cba8ae2dba02a4b6f32f03d_original.png?crop=faces&w=48&h=27&fit=crop&v=1463742962&auto=format&q=92&s=7a27263b751a0ebd29c1341d46b558b9",
+        "1024x576": "https://ksr-ugc.imgix.net/assets/012/215/713/d4f56d166cba8ae2dba02a4b6f32f03d_original.png?crop=faces&w=1024&h=576&fit=crop&v=1463742962&auto=format&q=92&s=278c86ea3d9ab70b7c3bac1a059516e5",
+        "1536x864": "https://ksr-ugc.imgix.net/assets/012/215/713/d4f56d166cba8ae2dba02a4b6f32f03d_original.png?crop=faces&w=1552&h=873&fit=crop&v=1463742962&auto=format&q=92&s=d6d5c6af53d8122b36f3342e0a9a150c"
+      },
+      "name": "The Songs of Adelaide & Abullah",
+      "blurb": "A series of poems about pure love  pursued by the passion of another (The Wolf of Elveron)\n\nWhat love is this that so endures........",
+      "goal": 1000.0,
+      "pledged": 0.0,
+      "state": "failed",
+      "slug": "the-songs-of-adelaide-and-abullah",
+      "disable_communication": false,
+      "country": "GB",
+      "currency": "GBP",
+      "currency_symbol": "\u00a3",
+      "currency_trailing_code": false,
+      "deadline": 1444383360,
+      "state_changed_at": 1444383363,
+      "created_at": 1438685364,
+      "launched_at": 1439287948,
+      "staff_pick": false,
+      "is_starrable": false,
+      "backers_count": 0,
+      "static_usd_rate": 1.54863728,
+      "usd_pledged": "0.0",
+      "converted_pledged_amount": 0,
+      "fx_rate": 1.40870864,
+      "current_currency": "USD",
+      "usd_type": "domestic",
+      "creator": {
+        "id": 753774991,
+        "name": "Michael Golden",
+        "is_registered": true,
+        "chosen_currency": null,
+        "avatar": {
+          "thumb": "https://ksr-ugc.imgix.net/assets/010/204/497/54bc2710315ba5025689013f7ac1da70_original.JPG?w=40&h=40&fit=crop&v=1461673678&auto=format&q=92&s=c405aff4dc5e0ffc3fdada441413ec4f",
+          "small": "https://ksr-ugc.imgix.net/assets/010/204/497/54bc2710315ba5025689013f7ac1da70_original.JPG?w=160&h=160&fit=crop&v=1461673678&auto=format&q=92&s=7ce0a92d239af20ca3b28b79fbe390d4",
+          "medium": "https://ksr-ugc.imgix.net/assets/010/204/497/54bc2710315ba5025689013f7ac1da70_original.JPG?w=160&h=160&fit=crop&v=1461673678&auto=format&q=92&s=7ce0a92d239af20ca3b28b79fbe390d4"
+        },
+        "urls": {
+          "web": {
+            "user": "https://www.kickstarter.com/profile/753774991"
+          },
+          "api": {
+            "user": "https://api.kickstarter.com/v1/users/753774991?signature=1523177403.eee7cdab554a0d4c789f6d5499c594f1c60abe16"
+          }
+        }
+      },
+      "location": {
+        "id": 44418,
+        "name": "London",
+        "slug": "london-gb",
+        "short_name": "London, UK",
+        "displayable_name": "London, UK",
+        "localized_name": "London",
+        "country": "GB",
+        "state": "England",
+        "type": "Town",
+        "is_root": false,
+        "urls": {
+          "web": {
+            "discover": "https://www.kickstarter.com/discover/places/london-gb",
+            "location": "https://www.kickstarter.com/locations/london-gb"
+          },
+          "api": {
+            "nearby_projects": "https://api.kickstarter.com/v1/discover?signature=1523136683.522041c71d8547d652665f1a3d03b8f7e584a3c0&woe_id=44418"
+          }
+        }
+      },
+      "category": {
+        "id": 50,
+        "name": "Poetry",
+        "slug": "publishing/poetry",
+        "position": 11,
+        "parent_id": 18,
+        "color": 14867664,
+        "urls": {
+          "web": {
+            "discover": "http://www.kickstarter.com/discover/categories/publishing/poetry"
+          }
+        }
+      },
+      "profile": {
+        "id": 2050052,
+        "project_id": 2050052,
+        "state": "inactive",
+        "state_changed_at": 1438685364,
+        "name": null,
+        "blurb": null,
+        "background_color": null,
+        "text_color": null,
+        "link_background_color": null,
+        "link_text_color": null,
+        "link_text": null,
+        "link_url": null,
+        "show_feature_image": false,
+        "background_image_opacity": 0.8,
+        "should_show_feature_image_section": true,
+        "feature_image_attributes": {
+          "image_urls": {
+            "default": "https://ksr-ugc.imgix.net/assets/012/215/713/d4f56d166cba8ae2dba02a4b6f32f03d_original.png?crop=faces&w=1552&h=873&fit=crop&v=1463742962&auto=format&q=92&s=d6d5c6af53d8122b36f3342e0a9a150c",
+            "baseball_card": "https://ksr-ugc.imgix.net/assets/012/215/713/d4f56d166cba8ae2dba02a4b6f32f03d_original.png?crop=faces&w=560&h=315&fit=crop&v=1463742962&auto=format&q=92&s=bb15ea994387776a44e27c0b951ffd5e"
+          }
+        }
+      },
+      "spotlight": false,
+      "urls": {
+        "web": {
+          "project": "https://www.kickstarter.com/projects/753774991/the-songs-of-adelaide-and-abullah?ref=discovery",
+          "rewards": "https://www.kickstarter.com/projects/753774991/the-songs-of-adelaide-and-abullah/rewards"
+        }
+      }
+    }
+  ],
+  "total_hits": 2,
+  "live_projects_count": 0,
+  "past_projects_count": 1,
+  "term_categories": [],
+  "seed": 2538485,
+  "search_url": "/discover/advanced?term=The+Songs+of+Adelaide+",
+  "suggestion": "The Songs of Adelaide ",
+  "has_more": false
+}
