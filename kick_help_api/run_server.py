@@ -1,22 +1,22 @@
 from flask import request
 import flask
 import scrape
-import 
+import kick_help_model.model.model_simple as ms
 
 app = flask.Flask(__name__)
-model = None
-word_model = None
+model_simple = None
 
 
 def load_model():
 	# get global models
-	global model
+	global model_simple
+	# load luis' model
 
 
 @app.route('/predict', methods = ['GET', 'POST'])
 def predict():
 	# get global models
-	global model
+	global model_simple
 	# predict
 	data = {'success': 0.74}
 	return flask.jsonify(data)
