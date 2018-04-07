@@ -1,7 +1,7 @@
 from flask import request
 import flask
 import scrape
-import pandas as pd
+import 
 
 app = flask.Flask(__name__)
 model = None
@@ -18,8 +18,8 @@ def predict():
 	# get global models
 	global model
 	# predict
-	url = request.data
-	return flask.jsonify('test string')
+	data = {'success': 0.74}
+	return flask.jsonify(data)
 
 
 if __name__ == '__main__':
