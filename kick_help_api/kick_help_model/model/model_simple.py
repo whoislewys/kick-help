@@ -2,9 +2,12 @@
 import numpy as np
 import os
 import sys
+# TODO: make this actually compatible
 sys.path.append('C:\\Users\\lewys\\PycharmProjects\\kick-help\\kick_help_api\\')
 import scrape
 import keras
+from keras.models import Sequential
+from keras.layers import Dense, Activation, Dropout
 
 data_folder = os.path.join(os.pardir, 'data')
 dataset1_path = os.path.join(data_folder, 'ks-projects-201612.csv')
@@ -20,6 +23,16 @@ def category_to_int(kickstarter_category):
 
 
 def train(train_x, train_y):
+    input_dim = len(train_x[0])
+    model = Sequential()
+    model.add(Dense(500, input_dim=input_dim))
+    model.add(Activation('relu'))
+    model.add(Dropout(0.4))
+    model.add(Dense(300))
+    model.add(Activation('relu'))
+    model.add(Dropout(0.4))
+    model.add(Dense(10))
+    model.add(Activation('softmax'))
     return
 
 
@@ -40,15 +53,15 @@ if __name__ == '__main__':
     for project in raw_train_data:
         #description_values = (wm.get_word_values((project['description']), word_model))
         for param in raw_train_data:
-            project_category = category_to_int(kickstarter_category=param['category']).astype(np.float32)
-
-
-            features.append(param['category'])
-            # category (cast to int)
-            # goal
-            # duration float seconds
-            # label = raised
+            #proj_category = np.float32(category_to_int(cat=param['category']))
+            proj_goal = param['goal']
+            proj_duration = param['duration']
+            proj_raised = param['raised']
+            features.append(proj_goal)
+            features.append(proj_duration)
+            features.append(proj_raised)
+            print(features)
     train_x = np.array(features)
     train_y = []
-    #train_y = keras.utils.to_categorical(raw_train_labels, num_classes)
+    train_y = keras.utils.to_categorical(raw_train_labels, num_classes)
     train(train_x, train_y)
