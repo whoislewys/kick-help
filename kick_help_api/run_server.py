@@ -6,7 +6,7 @@ import pandas as pd
 
 app = flask.Flask(__name__)
 model = None
-word_model = none
+word_model = None
 
 
 def load_model():
