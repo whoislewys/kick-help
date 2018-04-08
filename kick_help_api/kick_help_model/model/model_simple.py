@@ -75,7 +75,7 @@ def train(x_train, y_train, x_test , y_test):
     model.add(Dense(num_classes, activation='softmax'))
 
     sgd = keras.optimizers.SGD(lr=lr, momentum=0.9, nesterov=True)
-    model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['categorical_accuracy'])
+    model.compile(optimizer=sgd, loss='binary_crossentropy', metrics=['binary_accuracy'])
     model.fit(x=x_train, y=y_train,
               batch_size=batch_size,
               epochs=epochs,
@@ -87,7 +87,7 @@ def train(x_train, y_train, x_test , y_test):
 
 
 def predict():
-    model = keras.models.load_model('kick_help_model_simple.h5')
+    model = keras.models.load_model('kick_help_model_simple_sig.h5')
     # x should be in format goal, duration, category
     X = np.array([1000, 4095420, 7], dtype='float32')
     X.shape = (1, len(X))
