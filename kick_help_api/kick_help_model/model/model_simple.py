@@ -142,4 +142,8 @@ if __name__ == '__main__':
     print('test data dimensionality: ', x_test.shape)
     train(x_train, y_train, x_test, y_test)
     predict()
+
+    print(GOAL_MAX)
+    print(DUR_MAX)
+    print(CAT_MAX)
     #inspect_weights()
