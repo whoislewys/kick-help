@@ -50,7 +50,7 @@ def load_data(csv_path):
         try:
             proj_goal = np.float32(project['goal'])
         except Exception as e:
-            proj_goal = 1000
+            proj_goal = np.float32(1000)
         proj_duration = np.float32(project['duration'])
         features = [proj_goal, proj_duration, proj_category]
         h_stack_features = np.hstack(features)
@@ -63,7 +63,7 @@ def load_data(csv_path):
 
 def train(x_train, y_train, x_test , y_test):
     num_classes = 2
-    batch_size = 20
+    batch_size = 250
     epochs = 20
     lr = 0.01
     input_dim = (x_train.shape[1])
@@ -72,7 +72,7 @@ def train(x_train, y_train, x_test , y_test):
     model.add(Dropout(0.4))
     model.add(Dense(50, activation='relu'))
     model.add(Dropout(0.4))
-    model.add(Dense(1, activation='softmax'))
+    model.add(Dense(num_classes, activation='softmax'))
 
     sgd = keras.optimizers.SGD(lr=lr, momentum=0.9, nesterov=True)
     model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['categorical_accuracy'])
@@ -82,13 +82,14 @@ def train(x_train, y_train, x_test , y_test):
               verbose=1,
               validation_data=(x_test, y_test),
               shuffle=True)
-    #model.save('kick_help_model_simple.h5')
+    model.save('kick_help_model_simple.h5')
     return
 
 
 def predict():
     model = keras.models.load_model('kick_help_model_simple.h5')
-    X = np.array([2, 1000000, 1000000], dtype='float32')
+    # x should be in format goal, duration, category
+    X = np.array([1000, 4095420, 7], dtype='float32')
     X.shape = (1, len(X))
     prediction = model.predict(X)
     print(prediction)
@@ -108,6 +109,5 @@ if __name__ == '__main__':
     print('test data dimensionality: ', x_test.shape)
     print('test label dimensionality: ', y_test.shape)
     train(x_train, y_train, x_test, y_test)
-    '''
+
     predict()
-    '''
