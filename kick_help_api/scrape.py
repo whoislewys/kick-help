@@ -67,7 +67,7 @@ def scrape_from_csv(dataset_path):
                 continue
             elif '(' in name or ')' in name:
                 continue
-            elif counter >= 80000:
+            elif counter >= 70000:
                 break
 
             try:
@@ -75,7 +75,7 @@ def scrape_from_csv(dataset_path):
             except:
                 duration = '0'
 
-            print('scraping: {}, number: {}'.format(name, counter))
+            #print('scraping: {}, number: {}'.format(name, counter))
             scrape_results = scrape_for_training( category, goal, duration)
             X.append(scrape_results)
             num_label = label_to_number(outcome)
