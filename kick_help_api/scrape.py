@@ -59,7 +59,8 @@ def scrape_from_csv(dataset_path):
             name = row[1]
 
             # print('cat before checking: ', category)
-            if counter == 0 or outcome == 'canceled': # ignore csv categories and canceled projects
+            #if counter == 0 or outcome == 'canceled' or outcome == 'suspended': # ignore csv categories and canceled projects
+            if counter == 0 or (outcome != 'successful' and outcome != 'failed'):
                 continue
             elif category not in CATEGORIES:
                 continue
@@ -77,7 +78,8 @@ def scrape_from_csv(dataset_path):
             scrape_results = scrape_for_training( category, goal, duration)
             X.append(scrape_results)
             num_label = label_to_number(outcome)
-            Y.append(num_label)
+            #num_label = outcome
+            Y.append((num_label,))
     return X, Y
 
 
@@ -129,13 +131,12 @@ def scrape_from_url(project_url):
 
 
 def label_to_number(outcome): # text_label is success=0, failed=1, canceled=2 (sic)
-    num_label = -1
     if outcome == 'successful':
         num_label = 0
     elif outcome == 'failed':
         num_label = 1
-    elif outcome == 'canceled':
-        num_label = 2
+    else:
+        num_label = 0
     return num_label
 
 

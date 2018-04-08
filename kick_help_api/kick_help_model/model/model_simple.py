@@ -8,6 +8,7 @@ import scrape
 import tensorflow as tf
 import keras
 from keras import Model
+from sklearn.preprocessing import LabelEncoder
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Dropout
 from keras import backend as K
@@ -37,17 +38,13 @@ def category_to_int(cat):
     try:
         var = cat_enum.index(cat)
     except:
-        var = -1
+        var = 1
     return var
 
 
 def load_data(csv_path):
-    raw_train_data, raw_train_labels = scrape.scrape_from_csv(csv_path)
-    num_classes = 2
-    features = []
+    raw_train_data, y_train = scrape.scrape_from_csv(csv_path)
     v_stack_features = np.empty((0, 3), dtype='float32')
-    labels = np.empty(0, dtype=np.int)
-
     for project in raw_train_data:
         proj_category = np.float32(category_to_int(project['category']))
         try:
@@ -60,42 +57,42 @@ def load_data(csv_path):
         v_stack_features = np.vstack([v_stack_features, h_stack_features])
 
     x_train = np.array(v_stack_features)
-    y_train = keras.utils.to_categorical(raw_train_labels, num_classes)
-    return x_train, y_train
+    #y_train = keras.utils.to_categorical(raw_train_labels, num_classes)
+    return x_train, np.array(y_train)
 
 
-def train(x_train, y_train, x_test , y_test):
-    num_classes = 2
-    batch_size = 250
-    epochs = 20
-    lr = 0.001
+def train(x_train, y_train, x_test, y_test):
+    batch_size = 32
+    epochs = 10
+    lr = 0.01
     input_dim = (x_train.shape[1])
     model = Sequential()
-    model.add(Dense(60, input_dim=3, kernel_initializer='normal', activation='relu'))
-    model.add(Dense(2, kernel_initializer='normal', activation='softmax'))
+    model.add(Dense(30, input_dim=input_dim, activation='relu'))
+    model.add(Dense(3, activation='softmax'))
 
-    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    opt = keras.optimizers.SGD(lr=lr)
+    model.compile(optimizer='rmsprop', loss='binary_crossentropy', metrics=['accuracy'])
     model.fit(x=x_train, y=y_train,
               batch_size=batch_size,
               epochs=epochs,
               verbose=1,
               validation_data=(x_test, y_test),
               shuffle=True)
-    #model.save('kick_help_model_simple_2.h5')
+    model.save('kick_help_model_simple.h5')
     return
 
 
 def predict():
     # 1 in the first column is success
     # 1 in the second column is failure
-    model = keras.models.load_model('kick_help_model_simple_2.h5')
+    model = keras.models.load_model('kick_help_model_simple.h5')
     # x should be in format goal, duration, category
     X = np.array([8000, 2592000, 11], dtype='float32')
     # print(X)
     X.shape = (1, len(X))
     prediction = model.predict(X)
-    print(prediction)
-    print(type(prediction))
+    print('Prediction: ', prediction)
+    print('Pred type: ', type(prediction))
 
 
 def inspect_weights():
@@ -114,19 +111,24 @@ def inspect_weights():
 
 
 if __name__ == '__main__':
-    # print("Data: {}\nLabels: {}".format(x_train, y_train))
-    num_classes = 2
     print('Loading training data...')
+
+
     x_train, y_train = load_data(csv_path=TRAIN_DATA_PATH)
+    # x_train = [n/x_train.max() for n in x_train]
+    # x_train = np.asarray(x_train)
+    # y_train = np.asarray(y_train)
+    print(type(y_train))
+    print(type(y_train[0]))
     print('Loading testing data...')
     x_test, y_test = load_data(csv_path=TEST_DATA_PATH)
 
-    print('train data dimensionality: ', x_train.shape)
-    print('train label dimensionality: ', y_train.shape)
-    print('test data dimensionality: ', x_test.shape)
-    print('test label dimensionality: ', y_test.shape)
-    train(x_train, y_train, x_test, y_test)
-    #train_tensorflow(x_train, y_train, x_test, y_test)
-    predict()
+    # x_test = [n / x_test.max() for n in x_test]
+    # x_test = np.asarray(x_test)
+    y_test = np.asarray(y_test)
 
+    print('train data dimensionality: ', x_train.shape)
+    print('test data dimensionality: ', x_test.shape)
+    train(x_train, y_train, x_test, y_test)
+    predict()
     inspect_weights()
