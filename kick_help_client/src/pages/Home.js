@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
 class Home extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       url: ''
     }
@@ -22,17 +22,31 @@ class Home extends Component {
 
   submitForm() {
     if(this.validURL()) {
-
+      this.props.submit('https://www.kickstarter.com/projects/' + this.state.url);
+      this.props.history.push('/data')
     }
   }
 
   render() {
     return (
       <div className="form-parent">
-        <form>
-          <input type="url" name="name" className="question" id="nme" value={this.state.url} onChange={this.handleURLChange} required autoComplete="off" />
-          <label htmlFor="url"><span>Project URL</span></label>
-          <input type="button" value="Submit!" onClick={this.submitForm} />
+        <form onSubmit={this.submitForm}>
+          <div className="url-input">
+            <input
+              className="url-input"
+              name="url-input"
+              id="url-input"
+              type="text"
+              value={this.state.url}
+              onChange={this.handleURLChange}
+              required
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false" />
+            <label htmlFor="url-input"><span className="url-text">https://kickstarter.com/projects/</span></label>
+            <input type="submit" style={{display: 'none'}}/>
+          </div>
         </form>
       </div>
     );
