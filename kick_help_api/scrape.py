@@ -38,10 +38,28 @@ def scrape_from_csv(dataset_path):
         dataset1 = csv.reader(csvfile)
         # iterate through projects
         for counter, row in enumerate(dataset1):
-            outcome = row[9]  # possible values: success, failed, canceled (sic)
-            category = row[3].lower()
-            goal = row[6]
+            # give everything default values
+            try:
+                outcome = row[9]  # possible values: success, failed, canceled (sic)
+            except:
+                outcome = '0'
+
+            try:
+                category = row[3].lower()
+            except:
+                category = 'food'
+
+            try:
+                goal = row[6]
+                if len(goal.split(' ')) >= 1:
+                    goal = '1000'
+            except:
+                goal = '1000'
+
+            deadline = row[5]
+            launched = row[7]
             name = row[1]
+
             # print('cat before checking: ', category)
             if counter == 0 or outcome == 'canceled': # ignore csv categories and canceled projects
                 continue
@@ -49,26 +67,23 @@ def scrape_from_csv(dataset_path):
                 continue
             elif '(' in name or ')' in name:
                 continue
+            elif counter >= 80000:
+                break
+
+            try:
+                duration = get_duration(launched, deadline)
+            except:
+                duration = '0'
 
             print('scraping: {}, number: {}'.format(name, counter))
-            name_pattern = re.compile(name)
-            search = requests.get('http://www.kickstarter.com/projects/search.json?search=&term={}'.format(name))
-            search_response = search.json()
-            # print('cat after checking: {}\n\n'.format(category))
-
-            for project in search_response['projects']:
-                if name_pattern.match(project['name']): # search for project name that matches dataset name
-                    # scrape
-                    project_url = project['urls']['web']['project']
-                    scrape_results = scrape_for_training(project_url, category, goal=goal)
-                    X.append(scrape_results)
-                    num_label = label_to_number(outcome)
-                    Y.append(num_label)
+            scrape_results = scrape_for_training( category, goal, duration)
+            X.append(scrape_results)
+            num_label = label_to_number(outcome)
+            Y.append(num_label)
     return X, Y
 
 
-
-def scrape_for_training(project_url, category, goal):
+def scrape_for_training(category, goal, duration):
     # TODO update this to better match error checking done in funct above
     # init dictionary
     data = {'category': '',
@@ -80,19 +95,9 @@ def scrape_for_training(project_url, category, goal):
             'description': '',
             'risks': '',
             'name': ''}
-    # get html tree
-    page = requests.get(project_url)
-    tree = html.fromstring(page.content)
-    # get content
     data['category'] = category
     data['goal'] = goal
-    try:
-        time1 = tree.xpath('//div[@class="NS_campaigns__funding_period"]//p//time[1]/@datetime')[0]
-        time2 = tree.xpath('//div[@class="NS_campaigns__funding_period"]//p//time[2]/@datetime')[0]
-        data['duration'] = get_duration(time1, time2)
-    except:
-        pass
-
+    data['duration'] = duration
     # clean
     for key in data:
         data[key] = data[key].replace('\n', ' ').strip()
@@ -174,10 +179,10 @@ def label_to_number(outcome): # text_label is success=0, failed=1, canceled=2 (s
     return num_label
 
 
-def get_duration(time1, time2):
+def get_duration(launched, deadline):
     # convert string to datetime
-    t1 = datetime.strptime(time1[0:18], '%Y-%m-%dT%H:%M:%S')
-    t2 = datetime.strptime(time2[0:18], '%Y-%m-%dT%H:%M:%S')
+    t1 = datetime.strptime(launched[0:18], '%Y-%m-%d %H:%M:%S')
+    t2 = datetime.strptime(deadline[0:18], '%Y-%m-%d %H:%M:%S')
     # get delta
     t3 = t2 - t1
     # return
