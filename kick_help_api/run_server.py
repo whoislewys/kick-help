@@ -25,14 +25,14 @@ def predict():
 	# get global models
 	global model
 	# get data
-	results = scrape.scrape_from_url(request.args['url'])
-	goal = np.float32(results['goal'])
-	duration = np.float32(results['duration'])
-	category = np.float32(category_to_int(results['category']))
+	page = scrape.scrape_from_url(request.args['url'])
+	goal = np.float32(page['goal'])
+	duration = np.float32(page['duration'])
+	category = np.float32(category_to_int(page['category']))
 	x = np.array([goal, duration, category], dtype='float32')
-	print(x)
 	x.shape = (1, len(x))
-	data = {'success': int(model.predict(x))}
+	results = model.predict(x)
+	data = {'success': float(results)}
 	return flask.jsonify(data)
 
 
