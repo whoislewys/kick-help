@@ -118,51 +118,13 @@ def scrape_from_url(project_url):
             'risks': '',
             'name': ''}
     # get html tree
-    page = requests.get(project_url)
-    tree = html.fromstring(page.content)
-    # get content
-    try:
-        data['category'] = tree.xpath('//a[@class="nowrap navy-700 flex items-center medium mr3 type-12"]/text()')[0].lower()
-    except:
-        pass
-    try:
-        data['title'] = tree.xpath('//div[@class="col-20-24 col-lg-15-24 hide block-md order-2-md"]//h2/text()')[0]
-    except:
-        pass
-    try:
-        data['blurb'] = tree.xpath('//div[@class="col-20-24 col-lg-15-24 hide block-md order-2-md"]//p/text()')[0]
-    except:
-        pass
-    try:
-        time1 = tree.xpath('//div[@class="NS_campaigns__funding_period"]//p//time[1]/@datetime')[0]
-        time2 = tree.xpath('//div[@class="NS_campaigns__funding_period"]//p//time[2]/@datetime')[0]
-        data['duration'] = get_duration(time1, time2)
-    except:
-        pass
-    try:
-        data['goal'] = tree.xpath('//div[@id="pledged"]/@data-goal')[0]
-    except:
-        pass
-    try:
-        data['raised'] = tree.xpath('//div[@id="pledged"]/@data-pledged')[0]
-    except:
-        pass
-    try:
-        data['description'] = ''.join(tree.xpath('//div[@class="full-description js-full-description responsive-media formatted-lists"]//p/text()'))
-        # text_to_word_sequence(data['description'])
-    except:
-        pass
-    try:
-        data['risks'] = ''.join(tree.xpath('//div[@class="mb3 mb10-sm mb3 js-risks"]//p/text()'))
-    except:
-        pass
-    try:
-        data['name'] = tree.xpath('//a[@class="medium navy-700 remote_modal_dialog"]/text()')[0]
-    except:
-        pass
-    # clean
-    for key in data:
-        data[key] = data[key].replace('\n', ' ').strip()
+    page = requests.get('https://www.kickstarter.com/projects/search.json?search=&tearm={}'.format(project_url.split('/')[-1]))
+    response = page.json()
+    project = response['projects'][0] 
+
+    data['category'] = project['category']['slug'].split('/')[0]
+    data['goal'] = project['goal']
+    data['duration'] = project['deadline'] - project['launched_at']   
 
     # return
     return data
@@ -183,6 +145,15 @@ def get_duration(launched, deadline):
     # convert string to datetime
     t1 = datetime.strptime(launched[0:18], '%Y-%m-%d %H:%M:%S')
     t2 = datetime.strptime(deadline[0:18], '%Y-%m-%d %H:%M:%S')
+    # get delta
+    t3 = t2 - t1
+    # return
+    return(str(t3.total_seconds()))
+
+def get_duration_url(launched, deadline):
+    # convert string to datetime
+    t1 = datetime.strptime(launched[0:18], '%Y-%m-%dT%H:%M:%S')
+    t2 = datetime.strptime(deadline[0:18], '%Y-%m-%dT%H:%M:%S')
     # get delta
     t3 = t2 - t1
     # return
