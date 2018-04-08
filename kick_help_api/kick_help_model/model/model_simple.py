@@ -59,20 +59,19 @@ def load_data(csv_path):
 
 def train(x_train, y_train, x_test , y_test):
     num_classes = 2
-    batch_size = 256
+    batch_size = 20
     epochs = 20
     lr = 0.01
     input_dim = (x_train.shape[1])
     model = Sequential()
-    model.add(Dense(3, input_dim=input_dim, activation='relu'))
-    
+    model.add(Dense(150, input_dim=input_dim, activation='relu'))
     model.add(Dropout(0.4))
     model.add(Dense(50, activation='relu'))
     model.add(Dropout(0.4))
     model.add(Dense(num_classes, activation='softmax'))
 
     sgd = keras.optimizers.SGD(lr=lr, momentum=0.9, nesterov=True)
-    model.compile(optimizer=sgd, loss='binary_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['categorical_accuracy'])
     model.fit(x=x_train, y=y_train,
               batch_size=batch_size,
               epochs=epochs,

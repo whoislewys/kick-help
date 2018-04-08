@@ -67,7 +67,7 @@ def scrape_from_csv(dataset_path):
                 continue
             elif '(' in name or ')' in name:
                 continue
-            elif counter >= 70000:
+            elif counter >= 100000:
                 break
 
             try:
