@@ -1,9 +1,11 @@
-from flask import request
 import flask
+from flask import request
+from flask_cors import CORS
 import scrape
 import kick_help_model.model.model_simple as ms
 
 app = flask.Flask(__name__)
+CORS(app)
 model_simple = None
 
 
@@ -18,9 +20,8 @@ def predict():
 	# get global models
 	global model_simple
 	# get data
-	print(request.args['url'])
+	data = scrape.scrape_from_url(request.args['url'])
 	# predict
-	data = {'success': 0.74}
 	return flask.jsonify(data)
 
 
