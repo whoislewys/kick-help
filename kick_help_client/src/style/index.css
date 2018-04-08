@@ -27,6 +27,23 @@ form {
   position: relative;
 }
 
+.content {
+  width: 100%;
+}
+
+.graphinfo {
+  color: #f4eef6;
+  font-size: 16pt;
+}
+
+.page {
+  display: table;
+  text-align: center;
+  vertical-align: middle;
+  position: relative;
+  margin: 0 auto;
+}
+
 .url-input {
   width: 100%;
   position: relative;

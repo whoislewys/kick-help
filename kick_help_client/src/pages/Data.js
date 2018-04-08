@@ -42,11 +42,12 @@ class Data extends Component {
 
   render() {
     return (
-      <div>
+      <div className="page">
         <h1 id="perc" className=""></h1>
         <div className="grid">
           <Grid success={this.props.success} />
         </div>
+        <p className="graphinfo">% chance of reaching funding goal</p>
       </div>
     );
   }
