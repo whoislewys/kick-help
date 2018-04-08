@@ -10,8 +10,8 @@ from keras.models import Sequential
 from keras.layers import Dense, Activation, Dropout
 
 data_folder = os.path.join(os.pardir, 'data')
-dataset1_path = os.path.join(data_folder, 'ks-projects-201612.csv')
-dataset2_path = os.path.join(data_folder, 'ks-projects-201801.csv')
+TRAIN_DATA_PATH = os.path.join(data_folder, 'ks-projects-train.csv')
+TEST_DATA_PATH = os.path.join(data_folder, 'ks-projects-test.csv')
 
 
 def category_to_int(cat):
@@ -37,17 +37,45 @@ def category_to_int(cat):
     return var
 
 
-def train(train_x, train_y):
-    input_dim = len(train_x[0])
+def load_data(csv_path):
+    num_classes = 2
+    raw_train_data, raw_train_labels = scrape.scrape_from_csv(csv_path)
+    features = []
+    v_stack_features = np.empty((0, 3), dtype='float32')
+    labels = np.empty(0, dtype=np.int)
+    for project in raw_train_data:
+        for param in raw_train_data:
+            proj_category = np.float32(category_to_int(cat=param['category']))
+            proj_goal = np.float32(param['goal'])
+            proj_duration = np.float32(param['duration'])
+            features = [proj_goal, proj_duration, proj_category]
+            h_stack_features = np.hstack(features)
+            v_stack_features = np.vstack([v_stack_features, h_stack_features])
+    x_train = np.array(v_stack_features)
+    y_train = keras.utils.to_categorical(raw_train_labels, num_classes)
+    return x_train, y_train
+
+
+def train(x_train, y_train, x_test , y_test):
+    num_classes = 2
+    batch_size = 256
+    epochs = 20
+
+    input_dim = (x_train.shape[1])
     model = Sequential()
-    model.add(Dense(500, input_dim=input_dim))
-    model.add(Activation('relu'))
+    model.add(Dense(500, input_dim=input_dim, activation='relu'))
     model.add(Dropout(0.4))
-    model.add(Dense(300))
-    model.add(Activation('relu'))
+    model.add(Dense(300, activation='relu'))
     model.add(Dropout(0.4))
-    model.add(Dense(10))
-    model.add(Activation('softmax'))
+    model.add(Dense(num_classes, activation='softmax'))
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    model.fit(x=x_train, y=y_train,
+              batch_size=batch_size,
+              epochs=epochs,
+              verbose=1,
+              validation_data=(x_test, y_test),
+              shuffle=True)
+    model.save('kick_help_model_simple.h5')
     return
 
 
@@ -56,38 +84,10 @@ def preprocess(text):
 
 
 if __name__ == '__main__':
-    # train_x, train_y = scrape_from_csv(dataset_path=dataset1_path)
-    # print("Data: {}\nLabels: {}".format(train_x, train_y))
+    # print("Data: {}\nLabels: {}".format(x_train, y_train))
     num_classes = 2
-    raw_train_data, raw_train_labels = scrape.scrape_from_csv(dataset1_path)
-
-    features = []
-    v_stack_features = np.empty((0, 4), dtype='float32')
-    labels = np.empty(0, dtype=np.int)
-    for project in raw_train_data:
-        #description_values = (wm.get_word_values((project['description']), word_model))
-        for param in raw_train_data:
-            proj_category = np.float32(category_to_int(cat=param['category']))
-            if proj_category == -1:
-                continue
-            proj_goal = np.float32(param['goal'])
-            proj_duration = np.float32(param['duration'])
-            proj_raised = np.float32(param['raised'])
-            features = [proj_goal, proj_duration, proj_raised, proj_category]
-            # features.append(proj_goal)
-            # features.append(proj_duration)
-            # features.append(proj_raised)
-            # features.append(proj_category)
-            h_stack_features = np.hstack(features)
-            v_stack_features = np.vstack([v_stack_features, h_stack_features])
-            # category (cast to int)
-            # goal
-            # duration float seconds
-            # label = raised
-
-    train_x = np.array(v_stack_features)
-
-    train_y = keras.utils.to_categorical(raw_train_labels, num_classes)
-    print(train_x)
-    print(train_y)
-    train(train_x, train_y)
+    x_train, y_train = load_data(csv_path=TRAIN_DATA_PATH)
+    x_test, y_test = load_data(csv_path=TEST_DATA_PATH)
+    print('train data dimensionality: ', x_train.shape)
+    print('train label dimensionality: ', y_train)
+    train(x_train, y_train, x_test, y_test)

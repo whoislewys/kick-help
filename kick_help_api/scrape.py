@@ -11,6 +11,22 @@ data_folder = os.path.join(os.pardir, 'data')
 dataset1_path = os.path.join(data_folder, 'ks-projects-201612.csv')
 dataset2_path = os.path.join(data_folder, 'ks-projects-201801.csv')
 
+CATEGORIES = frozenset(['games',
+            'design',
+            'technology',
+            'film & video',
+            'music',
+            'fashion',
+            'publishing',
+            'food',
+            'art',
+            'comics',
+            'theater',
+            'photography',
+            'crafts',
+            'dance',
+            'journalism'])
+
 
 def scrape_from_csv(dataset_path):
     # open data
@@ -20,10 +36,14 @@ def scrape_from_csv(dataset_path):
         dataset1 = csv.reader(csvfile)
         # iterate through projects
         for counter, row in enumerate(dataset1):
-            text_label = row[9]  # possible values: success, failed, canceled (sic)
-            if counter == 0 or text_label == 'canceled': # ignore csv categories and canceled projects
+            outcome = row[9]  # possible values: success, failed, canceled (sic)
+            category = row[3].lower()
+            if counter == 0 or outcome == 'canceled' or category in CATEGORIES: # ignore csv categories and canceled projects
                 continue
+            elif counter == 15:
+                break
             name = row[1]
+            print('scraping ', name)
             name_pattern = re.compile(name)
             search = requests.get('http://www.kickstarter.com/projects/search.json?search=&term={}'.format(name))
             search_response = search.json()
@@ -33,7 +53,7 @@ def scrape_from_csv(dataset_path):
                     project_url = project['urls']['web']['project']
                     scrape_results = scrape_from_url(project_url)
                     X.append(scrape_results)
-                    num_label = label_to_number(text_label)
+                    num_label = label_to_number(outcome)
                     Y.append(num_label)
     return X, Y
 
@@ -100,12 +120,13 @@ def scrape_from_url(project_url):
     return data
 
 
-def label_to_number(text_label): # text_label is success=0, failed=1, canceled=2 (sic)
-    if text_label == 'successful':
+def label_to_number(outcome): # text_label is success=0, failed=1, canceled=2 (sic)
+    num_label = -1
+    if outcome == 'successful':
         num_label = 0
-    elif text_label == 'failed':
+    elif outcome == 'failed':
         num_label = 1
-    elif text_label == 'canceled':
+    elif outcome == 'canceled':
         num_label = 2
     return num_label
 
@@ -120,3 +141,13 @@ def get_duration(time1, time2):
     return(str(t3.total_seconds()))
 
 
+if __name__=='__main__':
+    if 'poetry' in CATEGORIES:
+        print('poetry is in cat')
+    #
+    # FOR TESTING
+    # TRAIN_DATA_PATH = r'C:\Users\lewys\PycharmProjects\kick-help\kick_help_api\kick_help_model\data\ks-projects-train.csv'
+    # raw_train_data, raw_train_labels = scrape_from_csv(TRAIN_DATA_PATH)
+    # print(len(raw_train_data), len(raw_train_labels))
+    # print()
+    #
