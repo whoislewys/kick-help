@@ -62,30 +62,29 @@ def load_data(csv_path):
 
 
 def train(x_train, y_train, x_test, y_test):
-    batch_size = 32
-    epochs = 10
-    lr = 0.01
+    batch_size = 25
+    epochs = 3
+    lr = 0.001
     input_dim = (x_train.shape[1])
     model = Sequential()
-    model.add(Dense(30, input_dim=input_dim, activation='relu'))
-    model.add(Dense(3, activation='softmax'))
+    model.add(Dense(20, input_dim=input_dim, activation='sigmoid'))
+    model.add(Dense(1, activation='sigmoid'))
 
-    opt = keras.optimizers.SGD(lr=lr)
-    model.compile(optimizer='rmsprop', loss='binary_crossentropy', metrics=['accuracy'])
+    opt = keras.optimizers.rmsprop(lr=lr)
+    model.compile(optimizer=opt, loss='binary_crossentropy', metrics=['binary_accuracy'])
     model.fit(x=x_train, y=y_train,
               batch_size=batch_size,
               epochs=epochs,
               verbose=1,
-              validation_data=(x_test, y_test),
-              shuffle=True)
-    model.save('kick_help_model_simple.h5')
+              )
+    model.save('kick_help_model_simple_3.h5')
     return
 
 
 def predict():
     # 1 in the first column is success
     # 1 in the second column is failure
-    model = keras.models.load_model('kick_help_model_simple.h5')
+    model = keras.models.load_model('kick_help_model_simple_3.h5')
     # x should be in format goal, duration, category
     X = np.array([8000, 2592000, 11], dtype='float32')
     # print(X)
@@ -112,23 +111,21 @@ def inspect_weights():
 
 if __name__ == '__main__':
     print('Loading training data...')
-
-
     x_train, y_train = load_data(csv_path=TRAIN_DATA_PATH)
     # x_train = [n/x_train.max() for n in x_train]
     # x_train = np.asarray(x_train)
     # y_train = np.asarray(y_train)
-    print(type(y_train))
-    print(type(y_train[0]))
+    #x_train = np.random.random((80000, 3))
+    #y_train = np.random.randint(2, size=(80000, 1))
     print('Loading testing data...')
     x_test, y_test = load_data(csv_path=TEST_DATA_PATH)
-
     # x_test = [n / x_test.max() for n in x_test]
     # x_test = np.asarray(x_test)
-    y_test = np.asarray(y_test)
-
+    #y_test = np.asarray(y_test)
+    #x_test = np.random.random((2000, 3))
+    #y_test = np.random.randint(2, size=(2000, 1))
     print('train data dimensionality: ', x_train.shape)
     print('test data dimensionality: ', x_test.shape)
     train(x_train, y_train, x_test, y_test)
     predict()
-    inspect_weights()
+    #inspect_weights()
