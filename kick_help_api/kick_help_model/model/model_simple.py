@@ -5,9 +5,12 @@ import sys
 # TODO: make this actually compatible
 sys.path.append('C:\\Users\\lewys\\PycharmProjects\\kick-help\\kick_help_api\\')
 import scrape
+import tensorflow as tf
 import keras
+from keras import Model
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Dropout
+from keras import backend as K
 import h5py
 
 data_folder = os.path.join(os.pardir, 'data')
@@ -65,38 +68,52 @@ def train(x_train, y_train, x_test , y_test):
     num_classes = 2
     batch_size = 250
     epochs = 20
-    lr = 0.01
+    lr = 0.001
     input_dim = (x_train.shape[1])
     model = Sequential()
-    model.add(Dense(150, input_dim=input_dim, activation='relu'))
-    model.add(Dropout(0.4))
-    model.add(Dense(50, activation='relu'))
-    model.add(Dropout(0.4))
-    model.add(Dense(num_classes, activation='softmax'))
+    model.add(Dense(60, input_dim=3, kernel_initializer='normal', activation='relu'))
+    model.add(Dense(2, kernel_initializer='normal', activation='softmax'))
 
-    sgd = keras.optimizers.SGD(lr=lr, momentum=0.9, nesterov=True)
-    model.compile(optimizer=sgd, loss='binary_crossentropy', metrics=['binary_accuracy'])
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
     model.fit(x=x_train, y=y_train,
               batch_size=batch_size,
               epochs=epochs,
               verbose=1,
               validation_data=(x_test, y_test),
               shuffle=True)
-    model.save('kick_help_model_simple.h5')
+    #model.save('kick_help_model_simple_2.h5')
     return
 
 
 def predict():
-    model = keras.models.load_model('kick_help_model_simple_sig.h5')
+    # 1 in the first column is success
+    # 1 in the second column is failure
+    model = keras.models.load_model('kick_help_model_simple_2.h5')
     # x should be in format goal, duration, category
-    X = np.array([1000, 4095420, 7], dtype='float32')
+    X = np.array([8000, 2592000, 11], dtype='float32')
+    # print(X)
     X.shape = (1, len(X))
     prediction = model.predict(X)
     print(prediction)
+    print(type(prediction))
+
+
+def inspect_weights():
+    # 1 in the first column is success
+    # 1 in the second column is failure
+    X = np.array([1000, 5000000, 7], dtype='float32')
+    X.shape = (1, len(X))
+    model = keras.models.load_model('kick_help_model_simple_2.h5')
+    get_1st_layer_op = K.function([model.layers[0].input, K.learning_phase()], [model.layers[0].output])
+    layer_output = get_1st_layer_op([X,0])[0]
+    # sigmoid(wx+b)
+    prediction = (sum(layer_output))
+    #prediction = model.predict(X)
+    print(prediction)
+    print(type(prediction))
 
 
 if __name__ == '__main__':
-
     # print("Data: {}\nLabels: {}".format(x_train, y_train))
     num_classes = 2
     print('Loading training data...')
@@ -109,5 +126,7 @@ if __name__ == '__main__':
     print('test data dimensionality: ', x_test.shape)
     print('test label dimensionality: ', y_test.shape)
     train(x_train, y_train, x_test, y_test)
-
+    #train_tensorflow(x_train, y_train, x_test, y_test)
     predict()
+
+    inspect_weights()
