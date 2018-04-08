@@ -18,6 +18,7 @@ def load_model():
 	global model
 	model = keras.models.load_model('kick_help_model_simple_3.h5')
 	# load luis' model
+	print('model: ', model)
 
 
 @app.route('/predict', methods = ['GET', 'POST'])
