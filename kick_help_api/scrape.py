@@ -11,7 +11,7 @@ data_folder = os.path.join(os.pardir, 'data')
 dataset1_path = os.path.join(data_folder, 'ks-projects-201612.csv')
 dataset2_path = os.path.join(data_folder, 'ks-projects-201801.csv')
 
-CATEGORIES = frozenset(['games',
+CATEGORIES = set(['games',
             'design',
             'technology',
             'film & video',
@@ -33,32 +33,74 @@ def scrape_from_csv(dataset_path):
     X = []
     Y = []
     with open(dataset_path, 'r') as csvfile:
+        # TODO validate title - remove quotes and parenthesis
         dataset1 = csv.reader(csvfile)
         # iterate through projects
         for counter, row in enumerate(dataset1):
             outcome = row[9]  # possible values: success, failed, canceled (sic)
             category = row[3].lower()
-            if counter == 0 or outcome == 'canceled' or category in CATEGORIES: # ignore csv categories and canceled projects
+            goal = row[6]
+            # print('cat before checking: ', category)
+            if counter == 0 or outcome == 'canceled': # ignore csv categories and canceled projects
+                continue
+            elif category not in CATEGORIES:
                 continue
             elif counter == 15:
                 break
+
             name = row[1]
-            print('scraping ', name)
+            # print('scraping ', name)
             name_pattern = re.compile(name)
             search = requests.get('http://www.kickstarter.com/projects/search.json?search=&term={}'.format(name))
             search_response = search.json()
+            # print('cat after checking: {}\n\n'.format(category))
+
             for project in search_response['projects']:
                 if name_pattern.match(project['name']): # search for project name that matches dataset name
                     # scrape
                     project_url = project['urls']['web']['project']
-                    scrape_results = scrape_from_url(project_url)
+                    scrape_results = scrape_for_training(project_url, category, goal=goal)
                     X.append(scrape_results)
                     num_label = label_to_number(outcome)
                     Y.append(num_label)
     return X, Y
 
 
+
+def scrape_for_training(project_url, category, goal):
+    # TODO update this to better match error checking done in funct above
+    # init dictionary
+    data = {'category': '',
+            'blurb': '',
+            'title': '',
+            'duration': '',
+            'goal': '',
+            'raised': '',
+            'description': '',
+            'risks': '',
+            'name': ''}
+    # get html tree
+    page = requests.get(project_url)
+    tree = html.fromstring(page.content)
+    # get content
+    data['category'] = category
+    data['goal'] = goal
+    try:
+        time1 = tree.xpath('//div[@class="NS_campaigns__funding_period"]//p//time[1]/@datetime')[0]
+        time2 = tree.xpath('//div[@class="NS_campaigns__funding_period"]//p//time[2]/@datetime')[0]
+        data['duration'] = get_duration(time1, time2)
+    except:
+        pass
+
+    # clean
+    for key in data:
+        data[key] = data[key].replace('\n', ' ').strip()
+
+    return data
+
+
 def scrape_from_url(project_url):
+    # TODO update this to better match error checking done in funct above
     # init dictionary
     data = {'category': '',
             'blurb': '',
@@ -142,8 +184,7 @@ def get_duration(time1, time2):
 
 
 if __name__=='__main__':
-    if 'poetry' in CATEGORIES:
-        print('poetry is in cat')
+    print('yup')
     #
     # FOR TESTING
     # TRAIN_DATA_PATH = r'C:\Users\lewys\PycharmProjects\kick-help\kick_help_api\kick_help_model\data\ks-projects-train.csv'

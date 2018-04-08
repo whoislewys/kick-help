@@ -86,7 +86,9 @@ def preprocess(text):
 if __name__ == '__main__':
     # print("Data: {}\nLabels: {}".format(x_train, y_train))
     num_classes = 2
+    print('Loading training data...')
     x_train, y_train = load_data(csv_path=TRAIN_DATA_PATH)
+    print('Loading testing data...')
     x_test, y_test = load_data(csv_path=TEST_DATA_PATH)
     print('train data dimensionality: ', x_train.shape)
     print('train label dimensionality: ', y_train)
