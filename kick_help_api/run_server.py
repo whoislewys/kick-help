@@ -11,18 +11,12 @@ from kick_help_model.model.model_simple import category_to_int
 
 app = flask.Flask(__name__)
 CORS(app)
-model = None
-
-
-def load_model():
-	# get global models
-	global model
-	model = keras.models.load_model('kick_help_model_simple_3.h5')
 
 
 @app.route('/predict', methods = ['GET', 'POST'])
 def predict():
 	# get data
+	model = keras.models.load_model('kick_help_model_simple_3.h5')
 	page = scrape.scrape_from_url(request.args['url'])
 	goal = np.float32(page['goal'])
 	duration = np.float32(page['duration'])
@@ -35,7 +29,4 @@ def predict():
 
 
 if __name__ == '__main__':
-	print(('* loading keras model and flask starting server...'
-		'please wait until server has fully started'))
-	load_model()
 	app.run()
