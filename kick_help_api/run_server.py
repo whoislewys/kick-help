@@ -20,7 +20,8 @@ def predict():
 	# get global models
 	global model_simple
 	# get data
-	data = scrape.scrape_from_url(request.args['url'])
+	scrape_results = scrape.scrape_from_url(request.args['url'])
+	data = {'success': 0.74}
 	# predict
 	return flask.jsonify(data)
 
