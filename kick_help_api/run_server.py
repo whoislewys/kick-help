@@ -16,7 +16,7 @@ model = None
 def load_model():
 	# get global models
 	global model
-	model = keras.models.load_model(os.path.join(os.getcwd(), 'kick_help_model', 'model', 'kick_help_model_simple.h5'))
+	model = keras.models.load_model(os.path.join(os.getcwd(), 'kick_help_model', 'model', 'kick_help_model_simple_3.h5'))
 	# load luis' model
 
 
@@ -25,15 +25,14 @@ def predict():
 	# get global models
 	global model
 	# get data
-	'''results = scrape.scrape_from_url(request.args['url'])
+	results = scrape.scrape_from_url(request.args['url'])
 	goal = np.float32(results['goal'])
 	duration = np.float32(results['duration'])
 	category = np.float32(category_to_int(results['category']))
 	x = np.array([goal, duration, category], dtype='float32')
-	x.shape = (1, x.shape[0])
-	data = {'success': int(model.predict(x)[0][0])}'''
-	# predict
-	data = {'success': request.args['num']}
+	print(x)
+	x.shape = (1, len(x))
+	data = {'success': int(model.predict(x))}
 	return flask.jsonify(data)
 
 
