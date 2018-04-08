@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Data from "./pages/Data";
 
 class Main extends Component {
+<<<<<<< HEAD
   constructor(props) {
     super(props);
     this.state = {
@@ -55,6 +56,38 @@ class Main extends Component {
         <div className="content">
           <Route exact path="/" render={HomePage}/>
           <Route path="/data" render={DataPage}/>
+=======
+  constructor() {
+    super();
+    this.state = {
+      data: {}
+    }
+  }
+
+  queryAPI(url) {
+    fetch('https://kick-help-api.herokuapp.com/', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        url: url
+      })
+    }).then(results => {
+      return results.json();
+    }).then(data => {
+      this.setState({data});
+    })
+  }
+
+  render() {
+    return (
+      <HashRouter>
+        <div className="content">
+          <Route exact path="/" component={Home} submit={this.queryAPI}/>
+          <Route path="/data" component={Data} data={this.state.data}/>
+>>>>>>> 414037edfc163cc48fabd66e6fb287044411f842
         </div>
       </HashRouter>
     );
