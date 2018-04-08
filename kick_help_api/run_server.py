@@ -26,8 +26,9 @@ def predict():
 	category = np.float32(category_to_int(page['category']))
 	x = np.array([goal/GOAL_MAX, duration/DUR_MAX, category/CAT_MAX], dtype='float32')
 	x.shape = (1, len(x))
-	results = model.predict(x)
-	data = {'success': float(results)}
+	results = float(model.predict(x))
+	results = 0.50 + 2.5*(results - 0.50)
+	data = {'success': results}
 	return flask.jsonify(data)
 
 
