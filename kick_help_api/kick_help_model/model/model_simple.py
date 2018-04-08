@@ -38,19 +38,20 @@ def category_to_int(cat):
 
 
 def load_data(csv_path):
-    num_classes = 2
     raw_train_data, raw_train_labels = scrape.scrape_from_csv(csv_path)
+    num_classes = 2
     features = []
     v_stack_features = np.empty((0, 3), dtype='float32')
     labels = np.empty(0, dtype=np.int)
+
     for project in raw_train_data:
-        for param in raw_train_data:
-            proj_category = np.float32(category_to_int(cat=param['category']))
-            proj_goal = np.float32(param['goal'])
-            proj_duration = np.float32(param['duration'])
-            features = [proj_goal, proj_duration, proj_category]
-            h_stack_features = np.hstack(features)
-            v_stack_features = np.vstack([v_stack_features, h_stack_features])
+        proj_category = np.float32(category_to_int(project['category']))
+        proj_goal = np.float32(project['goal'])
+        proj_duration = np.float32(project['duration'])
+        features = [proj_goal, proj_duration, proj_category]
+        h_stack_features = np.hstack(features)
+        v_stack_features = np.vstack([v_stack_features, h_stack_features])
+
     x_train = np.array(v_stack_features)
     y_train = keras.utils.to_categorical(raw_train_labels, num_classes)
     return x_train, y_train
@@ -79,10 +80,6 @@ def train(x_train, y_train, x_test , y_test):
     return
 
 
-def preprocess(text):
-    return
-
-
 if __name__ == '__main__':
     # print("Data: {}\nLabels: {}".format(x_train, y_train))
     num_classes = 2
@@ -90,6 +87,9 @@ if __name__ == '__main__':
     x_train, y_train = load_data(csv_path=TRAIN_DATA_PATH)
     print('Loading testing data...')
     x_test, y_test = load_data(csv_path=TEST_DATA_PATH)
+
     print('train data dimensionality: ', x_train.shape)
-    print('train label dimensionality: ', y_train)
+    print('train label dimensionality: ', y_train.shape)
+    print('test data dimensionality: ', x_test.shape)
+    print('test label dimensionality: ', y_test.shape)
     train(x_train, y_train, x_test, y_test)

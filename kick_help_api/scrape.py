@@ -29,6 +29,7 @@ CATEGORIES = set(['games',
 
 
 def scrape_from_csv(dataset_path):
+    # 64 per second
     # open data
     X = []
     Y = []
@@ -40,16 +41,16 @@ def scrape_from_csv(dataset_path):
             outcome = row[9]  # possible values: success, failed, canceled (sic)
             category = row[3].lower()
             goal = row[6]
+            name = row[1]
             # print('cat before checking: ', category)
             if counter == 0 or outcome == 'canceled': # ignore csv categories and canceled projects
                 continue
             elif category not in CATEGORIES:
                 continue
-            elif counter == 15:
-                break
+            elif '(' in name or ')' in name:
+                continue
 
-            name = row[1]
-            # print('scraping ', name)
+            print('scraping: {}, number: {}'.format(name, counter))
             name_pattern = re.compile(name)
             search = requests.get('http://www.kickstarter.com/projects/search.json?search=&term={}'.format(name))
             search_response = search.json()
