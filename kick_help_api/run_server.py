@@ -6,6 +6,7 @@ import scrape
 import keras
 import h5py
 import numpy as np
+from kick_help_model.model import *
 from kick_help_model.model.model_simple import category_to_int
 
 app = flask.Flask(__name__)
@@ -17,8 +18,6 @@ def load_model():
 	# get global models
 	global model
 	model = keras.models.load_model('kick_help_model_simple_3.h5')
-	# load luis' model
-	print('model: ', model)
 
 
 @app.route('/predict', methods = ['GET', 'POST'])
