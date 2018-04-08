@@ -16,7 +16,7 @@ model = None
 def load_model():
 	# get global models
 	global model
-	model = keras.models.load_model(os.path.join(os.getcwd(), 'kick_help_model', 'model', 'kick_help_model_simple_3.h5'))
+	model = keras.models.load_model(os.path.join('kick_help_model', 'model', 'kick_help_model_simple_3.h5'))
 	# load luis' model
 
 
