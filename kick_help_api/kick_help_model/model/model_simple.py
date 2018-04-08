@@ -62,28 +62,32 @@ if __name__ == '__main__':
     raw_train_data, raw_train_labels = scrape.scrape_from_csv(dataset1_path)
 
     features = []
-    #features = np.empty((0, 50), dtype='float32')
+    v_stack_features = np.empty((0, 4), dtype='float32')
     labels = np.empty(0, dtype=np.int)
     for project in raw_train_data:
         #description_values = (wm.get_word_values((project['description']), word_model))
         for param in raw_train_data:
             proj_category = np.float32(category_to_int(cat=param['category']))
-            print('proj category: ', proj_category)
-            proj_goal = param['goal']
-            proj_duration = param['duration']
-            proj_raised = param['raised']
-            features.append(proj_goal)
-            features.append(proj_duration)
-            features.append(proj_raised)
-            print(features)
-            project_category = category_to_int(cat=param['category']).astype(np.float32)
-            features.append(param['category'])
+            if proj_category == -1:
+                continue
+            proj_goal = np.float32(param['goal'])
+            proj_duration = np.float32(param['duration'])
+            proj_raised = np.float32(param['raised'])
+            features = [proj_goal, proj_duration, proj_raised, proj_category]
+            # features.append(proj_goal)
+            # features.append(proj_duration)
+            # features.append(proj_raised)
+            # features.append(proj_category)
+            h_stack_features = np.hstack(features)
+            v_stack_features = np.vstack([v_stack_features, h_stack_features])
             # category (cast to int)
             # goal
             # duration float seconds
             # label = raised
 
-    train_x = np.array(features)
-    train_y = []
+    train_x = np.array(v_stack_features)
+
     train_y = keras.utils.to_categorical(raw_train_labels, num_classes)
+    print(train_x)
+    print(train_y)
     train(train_x, train_y)

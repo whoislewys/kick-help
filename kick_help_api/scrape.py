@@ -23,8 +23,6 @@ def scrape_from_csv(dataset_path):
             text_label = row[9]  # possible values: success, failed, canceled (sic)
             if counter == 0 or text_label == 'canceled': # ignore csv categories and canceled projects
                 continue
-            elif counter == 10:
-                break
             name = row[1]
             name_pattern = re.compile(name)
             search = requests.get('http://www.kickstarter.com/projects/search.json?search=&term={}'.format(name))
