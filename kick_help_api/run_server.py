@@ -23,8 +23,6 @@ def load_model():
 
 @app.route('/predict', methods = ['GET', 'POST'])
 def predict():
-	# get global models
-	global model
 	# get data
 	page = scrape.scrape_from_url(request.args['url'])
 	goal = np.float32(page['goal'])
