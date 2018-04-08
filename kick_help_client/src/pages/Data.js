@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-<<<<<<< HEAD
 import CountUp from 'countup.js';
 import Grid from './Grid';
 
@@ -48,14 +47,6 @@ class Data extends Component {
         <div className="grid">
           <Grid success={this.props.success} />
         </div>
-=======
-
-class Data extends Component {
-  render() {
-    return (
-      <div>
-        
->>>>>>> 414037edfc163cc48fabd66e6fb287044411f842
       </div>
     );
   }
