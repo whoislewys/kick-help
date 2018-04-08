@@ -8,6 +8,7 @@ import scrape
 import keras
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Dropout
+import h5py
 
 data_folder = os.path.join(os.pardir, 'data')
 TRAIN_DATA_PATH = os.path.join(data_folder, 'ks-projects-train.csv')
@@ -46,7 +47,10 @@ def load_data(csv_path):
 
     for project in raw_train_data:
         proj_category = np.float32(category_to_int(project['category']))
-        proj_goal = np.float32(project['goal'])
+        try:
+            proj_goal = np.float32(project['goal'])
+        except Exception as e:
+            proj_goal = 1000
         proj_duration = np.float32(project['duration'])
         features = [proj_goal, proj_duration, proj_category]
         h_stack_features = np.hstack(features)
@@ -68,7 +72,7 @@ def train(x_train, y_train, x_test , y_test):
     model.add(Dropout(0.4))
     model.add(Dense(50, activation='relu'))
     model.add(Dropout(0.4))
-    model.add(Dense(num_classes, activation='softmax'))
+    model.add(Dense(1, activation='softmax'))
 
     sgd = keras.optimizers.SGD(lr=lr, momentum=0.9, nesterov=True)
     model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['categorical_accuracy'])
@@ -78,11 +82,20 @@ def train(x_train, y_train, x_test , y_test):
               verbose=1,
               validation_data=(x_test, y_test),
               shuffle=True)
-    model.save('kick_help_model_simple.h5')
+    #model.save('kick_help_model_simple.h5')
     return
 
 
+def predict():
+    model = keras.models.load_model('kick_help_model_simple.h5')
+    X = np.array([2, 1000000, 1000000], dtype='float32')
+    X.shape = (1, len(X))
+    prediction = model.predict(X)
+    print(prediction)
+
+
 if __name__ == '__main__':
+
     # print("Data: {}\nLabels: {}".format(x_train, y_train))
     num_classes = 2
     print('Loading training data...')
@@ -95,3 +108,6 @@ if __name__ == '__main__':
     print('test data dimensionality: ', x_test.shape)
     print('test label dimensionality: ', y_test.shape)
     train(x_train, y_train, x_test, y_test)
+    '''
+    predict()
+    '''

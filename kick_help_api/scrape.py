@@ -51,8 +51,6 @@ def scrape_from_csv(dataset_path):
 
             try:
                 goal = row[6]
-                if len(goal.split(' ')) >= 1:
-                    goal = '1000'
             except:
                 goal = '1000'
 
@@ -75,7 +73,7 @@ def scrape_from_csv(dataset_path):
             except:
                 duration = '0'
 
-            #print('scraping: {}, number: {}'.format(name, counter))
+            print('scraping: {}, number: {}'.format(name, counter))
             scrape_results = scrape_for_training( category, goal, duration)
             X.append(scrape_results)
             num_label = label_to_number(outcome)
