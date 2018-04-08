@@ -3,10 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-<<<<<<< HEAD
     "countup.js": "^1.9.3",
-=======
->>>>>>> 414037edfc163cc48fabd66e6fb287044411f842
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
     "react-router-dom": "^4.2.2",
