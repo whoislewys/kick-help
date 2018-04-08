@@ -6,7 +6,6 @@ import scrape
 import keras
 import h5py
 import numpy as np
-from kick_help_model.model import *
 from kick_help_model.model.model_simple import category_to_int
 
 app = flask.Flask(__name__)
@@ -16,7 +15,7 @@ CORS(app)
 @app.route('/predict', methods = ['GET', 'POST'])
 def predict():
 	# get data
-	model = keras.models.load_model('kick_help_model_simple_3.h5')
+	model = keras.models.load_model('kick_help_model_simple.h5')
 	page = scrape.scrape_from_url(request.args['url'])
 	goal = np.float32(page['goal'])
 	duration = np.float32(page['duration'])

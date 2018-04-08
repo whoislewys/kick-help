@@ -3,7 +3,6 @@ import numpy as np
 import os
 import sys
 # TODO: make this actually compatible
-sys.path.append('C:\\Users\\lewys\\PycharmProjects\\kick-help\\kick_help_api\\')
 import scrape
 import tensorflow as tf
 import keras
@@ -15,8 +14,11 @@ from keras import backend as K
 import h5py
 
 data_folder = os.path.join(os.pardir, 'data')
-TRAIN_DATA_PATH = os.path.join(data_folder, 'ks-projects-train.csv')
-TEST_DATA_PATH = os.path.join(data_folder, 'ks-projects-test.csv')
+TRAIN_DATA_PATH = os.path.join(data_folder, 'ks-projects-201612.csv')
+TEST_DATA_PATH = os.path.join(data_folder, 'ks-projects-201801.csv')
+GOAL_MAX = 1
+DUR_MAX = 1
+CAT_MAX = 1
 
 
 def category_to_int(cat):
@@ -62,12 +64,12 @@ def load_data(csv_path):
 
 
 def train(x_train, y_train, x_test, y_test):
-    batch_size = 25
-    epochs = 3
-    lr = 0.001
+    batch_size = 30
+    epochs = 5
+    lr = 0.005
     input_dim = (x_train.shape[1])
     model = Sequential()
-    model.add(Dense(20, input_dim=input_dim, activation='sigmoid'))
+    model.add(Dense(10, input_dim=input_dim, activation='sigmoid'))
     model.add(Dense(1, activation='sigmoid'))
 
     opt = keras.optimizers.rmsprop(lr=lr)
@@ -86,12 +88,15 @@ def predict():
     # 1 in the second column is failure
     model = keras.models.load_model('kick_help_model_simple_3.h5')
     # x should be in format goal, duration, category
-    X = np.array([8000, 2592000, 11], dtype='float32')
+    X1 = np.array([8000/GOAL_MAX, 2592000/DUR_MAX, 11/CAT_MAX], dtype='float32')
+    X2 = np.array([5000/GOAL_MAX, 5000000/DUR_MAX, 10/CAT_MAX], dtype='float32')
     # print(X)
-    X.shape = (1, len(X))
-    prediction = model.predict(X)
-    print('Prediction: ', prediction)
-    print('Pred type: ', type(prediction))
+    X1.shape = (1, len(X1))
+    X2.shape = (1, len(X2))
+    prediction1 = model.predict(X1)
+    prediction2 = model.predict(X2)
+    print('Prediction1: ', prediction1)
+    print('Prediction2: ', prediction2)
 
 
 def inspect_weights():
@@ -112,6 +117,12 @@ def inspect_weights():
 if __name__ == '__main__':
     print('Loading training data...')
     x_train, y_train = load_data(csv_path=TRAIN_DATA_PATH)
+    GOAL_MAX = x_train[:,0].max()
+    DUR_MAX = x_train[:,1].max()
+    CAT_MAX = x_train[:,2].max()
+    x_train[:,0] = [n / GOAL_MAX for n in x_train[:,0]]
+    x_train[:,1] = [n / DUR_MAX for n in x_train[:,1]]
+    x_train[:,2] = [n / CAT_MAX for n in x_train[:,2]]
     # x_train = [n/x_train.max() for n in x_train]
     # x_train = np.asarray(x_train)
     # y_train = np.asarray(y_train)
@@ -119,6 +130,9 @@ if __name__ == '__main__':
     #y_train = np.random.randint(2, size=(80000, 1))
     print('Loading testing data...')
     x_test, y_test = load_data(csv_path=TEST_DATA_PATH)
+    x_test[:,0] = [n / GOAL_MAX for n in x_test[:,0]]
+    x_test[:,1] = [n / DUR_MAX for n in x_test[:,1]]
+    x_test[:,2] = [n / CAT_MAX for n in x_test[:,2]]
     # x_test = [n / x_test.max() for n in x_test]
     # x_test = np.asarray(x_test)
     #y_test = np.asarray(y_test)
