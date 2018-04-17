@@ -4,7 +4,7 @@ from flask_cors import CORS
 import os
 import scrape
 import keras
-import h5py
+import h5pym
 import numpy as np
 from kick_help_model.model.model_simple import category_to_int
 
