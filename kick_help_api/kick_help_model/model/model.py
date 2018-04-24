@@ -41,6 +41,9 @@ def scale(x_train):
 	x_train[:,0] = [n / category_max for n in x_train[:,0]]
 	x_train[:,1] = [n / duration_max for n in x_train[:,1]]
 	x_train[:,2] = [n / goal_max for n in x_train[:,2]]
+	print('category_max:', category_max)
+	print('duration_max:', duration_max)
+	print('goal_max:', goal_max)
 	return x_train
 
 # train keras model
@@ -93,8 +96,8 @@ if __name__ == '__main__':
 	'''
 	x_train, y_train = load_data(DATA_PATH)
 	x_train = scale(x_train)
-	accuracy = model_train(x_train, y_train, 50, 10000, 0.05, 11, 1)
-	print('Model Accuracy:', accuracy)
+	# accuracy = model_train(x_train, y_train, 50, 10000, 0.05, 11, 1) # optimal nodes = 11
+	# print('Model Accuracy:', accuracy)
 
 	
 	
