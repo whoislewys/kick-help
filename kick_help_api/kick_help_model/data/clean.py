@@ -1,12 +1,12 @@
 import csv
 from datetime import datetime
 
-
+# constants
 RAW_PROJECT_COUNT = 0
 CLEAN_PROJECT_COUNT = 0
 CLEAN_SUCCESSFUL_COUNT = 0
 CLEAN_FAILED_COUNT = 0
-CATEGORIES = set(['games',
+CATEGORIES = ['games',
 			'design',
 			'technology',
 			'film & video',
@@ -20,16 +20,16 @@ CATEGORIES = set(['games',
 			'photography',
 			'crafts',
 			'dance',
-			'journalism'])
+			'journalism']
 
-
+# clean data set
 def clean(infile, outfile):
 	# read from csv
 	print('Cleaning Project List...')
 	with open(infile, 'r', encoding='latin-1') as csvfile:
 		reader = csv.DictReader(csvfile)
 		data = [r for r in reader]
-		X = []
+		x = []
 		# clean
 		for p in data:
 			try:
@@ -39,40 +39,45 @@ def clean(infile, outfile):
 				goal = p['goal']
 				outcome = p['state']
 				if outcome == 'successful' and category in CATEGORIES:
+					category = get_category(category)
 					new_p = make_project(name, category, duration, goal, 1)
-					X.append(new_p)
+					x.append(new_p)
 				elif outcome == 'failed' and category in CATEGORIES:
+					category = get_category(category)
 					new_p = make_project(name, category, duration, goal, 0)
-					X.append(new_p)
+					x.append(new_p)
 			except:
 				pass
 	# write to csv
 	print('Writing Clean List...')
 	with open(outfile, 'w', encoding='latin-1') as csvfile:
-		keys = list(X[0].keys())
+		keys = list(x[0].keys())
 		writer = csv.DictWriter(csvfile, fieldnames=keys, lineterminator='\n')
 		writer.writeheader()
-		for p in X:
-			writer.writerow(p)
-		
+		for p in x:
+			writer.writerow(p)	
 	# summary
 	RAW_PROJECT_COUNT = len(data)
-	CLEAN_PROJECT_COUNT = len(X)
-	CLEAN_SUCCESSFUL_COUNT = sum(p['outcome'] == 1 for p in X)
-	CLEAN_FAILED_COUNT = sum(p['outcome'] == 0 for p in X)
+	CLEAN_PROJECT_COUNT = len(x)
+	CLEAN_SUCCESSFUL_COUNT = sum(p['outcome'] == 1 for p in x)
+	CLEAN_FAILED_COUNT = sum(p['outcome'] == 0 for p in x)
 	print('Raw Project Count:', RAW_PROJECT_COUNT)
 	print('Clean Project Count:', CLEAN_PROJECT_COUNT)
 	print('Clean Succesful Count:', CLEAN_SUCCESSFUL_COUNT)
 	print('Clean Failed Count:', CLEAN_FAILED_COUNT)
 
+# category to num
+def  get_category(category):
+	return CATEGORIES.index(category)
 
+# datetime to num
 def get_duration(launched, deadline):
     t1 = datetime.strptime(launched[0:18], '%Y-%m-%d %H:%M:%S')
     t2 = datetime.strptime(deadline[0:18], '%Y-%m-%d %H:%M:%S')
     t3 = t2 - t1
     return(str(t3.total_seconds()))
 
-
+# project structure
 def make_project(name, category, duration, goal, outcome):
 	data = {'name': '',
 			'category': '',
@@ -86,7 +91,7 @@ def make_project(name, category, duration, goal, outcome):
 	data['outcome'] = outcome
 	return data
 
-
+# run
 if __name__ == '__main__':
 	print('Project List 1:')
 	clean('raw-projects-1.csv', 'clean-projects-1.csv')
