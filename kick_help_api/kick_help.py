@@ -11,6 +11,8 @@ GOAL_MAX = 100000000
 
 MODEL_PATH = os.path.join('kick_help_model', 'model', 'model.h5')
 
+TEST_LIST = ['apple', 'ball', 'cooking', 'music', 'battle', 'game']
+
 def get_page(title):
 	data = {'name': '',
 			'category': '',
@@ -31,7 +33,7 @@ def get_page(title):
 
 def predict(title):
 	model = keras.models.load_model(MODEL_PATH)
-	data = get_page(url)
+	data = get_page(title)
 	if data == -1:
 		print('\nProject Could Not Be Found')
 	else:

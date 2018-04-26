@@ -86,18 +86,12 @@ def model_validate(x_train, y_train):
 # run
 if __name__ == '__main__':
 	# find optimal nodes
-	'''
 	x_train, y_train = load_data(DATA_PATH)
 	x_train = scale(x_train)
 	accuracy = model_validate(x_train, y_train)
 	max_accuracy = max(accuracy)
 	opt_nodes = accuracy.index(max_accuracy) * 10 + 1
 	print('Optimal Nodes:', opt_nodes)
-	'''
-	x_train, y_train = load_data(DATA_PATH)
-	x_train = scale(x_train)
-	# accuracy = model_train(x_train, y_train, 50, 10000, 0.05, 11, 1) # optimal nodes = 11
-	# print('Model Accuracy:', accuracy)
-
-	
-	
+	# create model with optimal nodes
+	accuracy = model_train(x_train, y_train, 50, 10000, 0.05, opt_nodes, 1) # optimal nodes = 11
+	print('Model Accuracy:', accuracy)
