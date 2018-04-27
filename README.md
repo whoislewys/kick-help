@@ -133,7 +133,7 @@ def load_data(infile):
 	return x_train, y_train
 ```
 #### scale
-The `scale` function transforms the features into the domain of [0, 1], which normalizes the data and can improve model accuracy.
+The `scale` function transforms the features into the domain of `[0, 1]`, which normalizes the data and can improve model accuracy.
 ```
 def scale(x_train):
 	category_max = x_train[:,0].max()
@@ -166,3 +166,26 @@ def model_train(x_train, y_train, batch_size, epochs, lr, nodes, save, outfile='
 		model.save(outfile)
 	return metrics.history['binary_accuracy'][0]
 ```
+#### model_validate
+The `model_validate` function attempts to fine the optimal number of nodes for a given batch sice, epoch size, and learn rate. For my application, I set the batch size to `50`, the epoch size to `1000`, and the learn rate to `0.05`. The function accepts a minimum number of nodes, a maximum number of nodes, and a step, then trains the model across the set of nodes. It tracks the accuracy of the model for each number of nodes and returns the optimum. For my application, the optimal number of nodes is `11`, with an accuracy of approx. `0.65`.
+```
+def model_validate(x_train, y_train, batch_size, epochs, lr, min_nodes, max_nodes, step, outfile='model_accuracy.txt'):
+	# options
+	batch_size = batch_size # 50
+	epochs = epochs # 1000
+	lr = lr # 0.05
+	nodes = np.arange(min_nodes, max_nodes, step) # [1, 11, ... 101]
+	x = []
+	# validate
+	for i in nodes:
+		print("Model With", i, "Nodes...")
+		accuracy = model_train(x_train, y_train, batch_size, epochs, lr, i, 0)
+		x.append(accuracy)
+	# save accuracy
+	np.savetxt(outfile, x, fmt='%f')
+
+	max_accuracy = max(x)
+	opt_nodes = x.index(max_accuracy) * step + min_nodes
+	return opt_nodes, max_accuracy
+```
+## Predict
