@@ -107,7 +107,7 @@ boco tea,7,2592000.0,5000,0
 cmuk. shoes: take on life feet first.,5,3024000.0,20000,1
 ```
 ## Model
-To model the success of Kickstarter projects I chose to use a neural network. My motivations behind this were twofold: I had no initial hypothesis about the relationship between the features and success and I have been wanting to learn the TensorFlow and Keras libraries for a while. For the features, I chose to use Kickstarter category, duration of fundraising, and USD goal. My output is binary: did the project succeed or fail at being funded.
+To model the success of Kickstarter projects I chose to use a neural network. My motivations behind this were twofold: I had no initial hypothesis about the relationship between the features and success and I have been wanting to learn the TensorFlow and Keras libraries for a while. For the features, I chose to use Kickstarter category, duration of fundraising, and USD goal. My output is binary: did the project succeed or fail at being funded. For the transformation function I chose to use the sigmoid function and set my output threshold at `0.5`. To train and validate my models I chose to fix the batch size at `50`, the epochs at `1000` and the learning rate at `0.05`, then varied the number of nodes in a single layers neural network. I tested nodes in the range `[1,101]`, using root mean squared to compute error and keras' built-in `binary_accuracy` function for loss. This process found the optimal number of nodes to be `11`. I then trained the model again using the optimal number of nodes, however I set the epochs at `10,000` to allow for more learning. My final accuracy was approximately `0.65`.
 #### load_data
 The `load_data` function reads the data from the clean dataset and converts it into the necessary format for a keras neural network: a numpy array of type `float32`.
 ```
@@ -145,7 +145,7 @@ def scale(x_train):
 	return x_train
 ```
 #### model_train
-The `model_train` function builds and trains the keras model. For this API, the model is a sinlge layer neural network, using the sigmoid function. It accepts the tuning parameters of batch size, epoch size, learning rate, and number of nodes. It is currently set to measure accuracy with the root mean squared method and measure loss with the built-in `binary_accuracy` method. Once the model has finished training it is exported to a specified file.
+The `model_train` function builds and trains the keras model. For this API, the model is a sinlge layer neural network, using the sigmoid function. It accepts the tuning parameters of batch size, epoch size, learning rate, and number of nodes. Once the model has finished training it is exported to a specified file.
 ```
 def model_train(x_train, y_train, batch_size, epochs, lr, nodes, save, outfile='model.h5'):
 	batch_size = batch_size
@@ -167,7 +167,7 @@ def model_train(x_train, y_train, batch_size, epochs, lr, nodes, save, outfile='
 	return metrics.history['binary_accuracy'][0]
 ```
 #### model_validate
-The `model_validate` function attempts to fine the optimal number of nodes for a given batch sice, epoch size, and learn rate. For my application, I set the batch size to `50`, the epoch size to `1000`, and the learn rate to `0.05`. The function accepts a minimum number of nodes, a maximum number of nodes, and a step, then trains the model across the set of nodes. It tracks the accuracy of the model for each number of nodes and returns the optimum. For my application, the optimal number of nodes is `11`, with an accuracy of approx. `0.65`.
+The `model_validate` function attempts to fine the optimal number of nodes for a given batch sice, epoch size, and learn rate.The function accepts a minimum number of nodes, a maximum number of nodes, and a step, then trains the model across the set of nodes.
 ```
 def model_validate(x_train, y_train, batch_size, epochs, lr, min_nodes, max_nodes, step, outfile='model_accuracy.txt'):
 	# options
@@ -190,3 +190,24 @@ def model_validate(x_train, y_train, batch_size, epochs, lr, min_nodes, max_node
 ```
 ## Predict
 To predict the success of a Kickstarter project, my project scrapes data from the the Kickstarter website and runs it through the trained model.
+#### get_page
+The `get_page` function returns the Kickstarter project data for the project most closely matching the search terms passed as a parameter. Since various Kickstarter pages have have differnt HTML layouts depending on how the browser and project author chose to format them I had difficulty creating a general scraper to pull data from the project page directly. However, the search projects page on Kickstarter is formatted consistently across all searches, so the `get_page` function pulls the raw JSON data returned as the result of a search. This has the added benifit of the a user only needing to know the relevant search terms to find their project, as opposed to a complete URL.
+```
+def get_page(title):
+	data = {'name': '',
+			'category': '',
+			'duration': '',
+			'goal': ''}
+	request_string = 'https://www.kickstarter.com/projects/search.json?search=&term={}'.format('-'.join(title.split(' ')))
+	page = requests.get(request_string)
+	response = page.json()
+	if response['total_hits'] == 0:
+		return -1
+	else:
+		project = response['projects'][0]
+		data['name'] = project['name']
+		data['category'] = get_category(project['category']['slug'].split('/')[0])
+		data['duration'] = np.float32(project['deadline'] - project['launched_at'])
+		data['goal'] = np.float32(project['goal'])
+		return data 
+```
