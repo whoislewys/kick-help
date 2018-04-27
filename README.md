@@ -78,15 +78,15 @@ def  get_category(category):
 The `get_duration` function is a helper function for `clean` that converts the datetime formats for the project start and finish times into raw integer values and returns the difference.
 ```
 def get_duration(launched, deadline):
-    t1 = datetime.strptime(launched[0:18], '%Y-%m-%d %H:%M:%S')
-    t2 = datetime.strptime(deadline[0:18], '%Y-%m-%d %H:%M:%S')
-    t3 = t2 - t1
-    return(str(t3.total_seconds()))
- ```
- #### make_project
- The `make_project` function is a helper function for `clean` that converts the data taken from the raw dataset into the desired format for the clean dataset.
- ```
- def make_project(name, category, duration, goal, outcome):
+	t1 = datetime.strptime(launched[0:18], '%Y-%m-%d %H:%M:%S')
+	t2 = datetime.strptime(deadline[0:18], '%Y-%m-%d %H:%M:%S')
+	t3 = t2 - t1
+	return(str(t3.total_seconds()))
+```
+#### make_project
+The `make_project` function is a helper function for `clean` that converts the data taken from the raw dataset into the desired format for the clean dataset.
+```
+def make_project(name, category, duration, goal, outcome):
 	data = {'name': '', 'category': '', 'duration': '', 'goal': '', 'outcome': ''}
 	data['category'] = category
 	data['duration'] = duration
@@ -94,10 +94,10 @@ def get_duration(launched, deadline):
 	data['name'] = name
 	data['outcome'] = outcome
 	return data
- ```
- Below is a sample of the clean dataset.
- ```
- toshicapital rekordz needs help to complete album,4,2595600.0,5000,0
+```
+Below is a sample of the clean dataset.
+```
+toshicapital rekordz needs help to complete album,4,2595600.0,5000,0
 support solar roasted coffee & green energy!  solarcoffee.co,7,1728000.0,1000,1
 the cottage market,12,2592000.0,5000,0
 g-spot place for gamers to connect with eachother & go pro!,0,3884400.0,200000,0
