@@ -69,7 +69,7 @@ def clean(infile, outfile):
 	print('Clean Project Count:', clean_project_count)
 	print('Clean Succesful Count:', clean_successful_count)
 	print('Clean Failed Count:', clean_failed_count)
-  ```
+```
 ###### get_category
 The `get_category` function is a helper function for `clean` that enumerates the Kickstarter category variable.
 ```
