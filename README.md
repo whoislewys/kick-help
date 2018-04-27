@@ -83,6 +83,18 @@ def get_duration(launched, deadline):
     t3 = t2 - t1
     return(str(t3.total_seconds()))
  ```
+ #### make_project
+ The `make_project` function is a helper function for `clean` that converts the data taken from the raw dataset into the desired format for the clean dataset.
+ ```
+ def make_project(name, category, duration, goal, outcome):
+	data = {'name': '', 'category': '', 'duration': '', 'goal': '', 'outcome': ''}
+	data['category'] = category
+	data['duration'] = duration
+	data['goal'] = goal
+	data['name'] = name
+	data['outcome'] = outcome
+	return data
+ ```
  Below is a sample of the clean dataset.
  ```
  toshicapital rekordz needs help to complete album,4,2595600.0,5000,0
@@ -96,3 +108,27 @@ cmuk. shoes: take on life feet first.,5,3024000.0,20000,1
 ```
 ## Model
 To model the success of Kickstarter projects I chose to use a neural network. My motivations behind this were twofold: I had no initial hypothesis about the relationship between the features and success and I have been wanting to learn the TensorFlow and Keras libraries for a while. For the features, I chose to use Kickstarter category, duration of fundraising, and USD goal. My output is binary: did the project succeed or fail at being funded.
+#### load_data
+The `load_data` function reads the data from the clean dataset and converts it into the necessary format for a keras neural network: a numpy array of type `float32`.
+```
+def load_data(infile):
+	x_train = []
+	y_train = []
+	# load
+	with open(infile, 'r', encoding='latin-1') as csvfile:
+		reader = csv.DictReader(csvfile)
+		data = [r for r in reader]
+	v_stack = np.empty((0, 3), dtype='float32')
+	# format
+	for p in data:
+		category = np.float32(p['category'])
+		duration = np.float32(p['duration'])
+		goal = np.float32(p['goal'])
+		features = [category, duration, goal]
+		h_stack = np.hstack(features)
+		v_stack = np.vstack([v_stack, h_stack])
+		y_train.append(p['outcome'])
+	x_train = np.array(v_stack)
+	y_train = np.array(y_train)
+	return x_train, y_train
+```
