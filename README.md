@@ -132,3 +132,37 @@ def load_data(infile):
 	y_train = np.array(y_train)
 	return x_train, y_train
 ```
+#### scale
+The `scale` function transforms the features into the domain of [0, 1], which normalizes the data and can improve model accuracy.
+```
+def scale(x_train):
+	category_max = x_train[:,0].max()
+	duration_max = x_train[:,1].max()
+	goal_max = x_train[:,2].max()
+	x_train[:,0] = [n / category_max for n in x_train[:,0]]
+	x_train[:,1] = [n / duration_max for n in x_train[:,1]]
+	x_train[:,2] = [n / goal_max for n in x_train[:,2]]
+	return x_train
+```
+#### model_train
+The `model_train` function builds and trains the keras model. For this API, the model is a sinlge layer neural network, using the sigmoid function. It accepts the tuning parameters of batch size, epoch size, learning rate, and number of nodes. It is currently set to measure accuracy with the root mean squared method and measure loss with the built-in `binary_accuracy` method. Once the model has finished training it is exported to a specified file.
+```
+def model_train(x_train, y_train, batch_size, epochs, lr, nodes, save, outfile='model.h5'):
+	batch_size = batch_size
+	epochs = epochs
+	lr = lr
+	input_dim = (x_train.shape[1])
+	model = Sequential()
+	model.add(Dense(nodes, input_dim=input_dim, activation='sigmoid'))
+	model.add(Dense(1, activation='sigmoid'))
+	opt = keras.optimizers.rmsprop(lr=lr)
+	model.compile(optimizer=opt, loss='binary_crossentropy', metrics=['binary_accuracy'])
+	metrics = model.fit(x=x_train, y=y_train,
+			batch_size=batch_size,
+			epochs=epochs,
+			verbose=1,
+			)
+	if save == 1:
+		model.save(outfile)
+	return metrics.history['binary_accuracy'][0]
+```
