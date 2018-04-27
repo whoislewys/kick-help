@@ -1,8 +1,7 @@
-# Kick-Help API
+# Final Project: Kick-Help API
 #### Isaiah Discipulo
-#### 4.26.2018
 ## Overview
-For this project I created a Python API to predict the success of a Kickstarter campaign. The API uses a neural network to estimate the probability of success for a given campaign. This project was concieved at Sunhacks, in collaboration with Luis Gomez and Sam Rondinelli. I have since spent the last month improving the API as a solo developer.
+For this project I created a Python API to predict the success of a Kickstarter campaign, called Kick-Help. Kick-Help uses a neural network to estimate the probability of success for a given campaign. This project was concieved at the Sunhacks hackathon, in collaboration with Luis Gomez and Sam Rondinelli. I have since spent the last month improving the API as a solo developer.
 ## Data
 To train my model, I used a dataset of Kickstarter projects, posted on Kaggle by user Kemical. The dataset included over 380,000 projects with several parameters, including Kickstarter category, duration of fundraising, USD goal, and project success. Below is a sample of the raw dataset.
 ```
