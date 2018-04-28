@@ -168,7 +168,7 @@ def model_validate(x_train, y_train, batch_size, epochs, lr, min_nodes, max_node
 	# options
 	batch_size = batch_size # 50
 	epochs = epochs # 1000
-	lr = lr # [0.01, 0.02, ... 0.1]
+	lr = lr # 0.05
 	nodes = np.arange(min_nodes, max_nodes, step) # [1, 11, ... 101]
 	x = []
 	# validate
@@ -223,21 +223,21 @@ def predict(title, model='model.h5'):
 
 if __name__ == '__main__':
 	# test clean functions
-	print()
-	clean('raw_projects_1.csv', 'clean_projects_1.csv')
+	#print()
+	#clean('raw_projects_1.csv', 'clean_projects_1.csv')
 
 	# test model functions
-	print()
-	batch_size = 50
-	epochs = 1
-	lr = 0.05
-	min_nodes = 1
-	max_nodes = 3
-	step = 1
-	x_train, y_train = load_data('clean_projects_1.csv')
-	x_train = scale(x_train)
-	opt_nodes, accuracy = model_validate(x_train, y_train, batch_size, epochs, lr, min_nodes, max_nodes, step, 'test_accuracy.txt')
-	model_train(x_train, y_train, batch_size, epochs, lr, opt_nodes, 1, 'test_model.h5')
+	#print()
+	#batch_size = 50
+	#epochs = 1
+	#lr = 0.05
+	#min_nodes = 1
+	#max_nodes = 3
+	#step = 1
+	#x_train, y_train = load_data('clean_projects_1.csv')
+	#x_train = scale(x_train)
+	#opt_nodes, accuracy = model_validate(x_train, y_train, batch_size, epochs, lr, min_nodes, max_nodes, step, 'test_accuracy.txt')
+	#model_train(x_train, y_train, batch_size, epochs, lr, opt_nodes, 1, 'test_model.h5')
 
 	# test predict functions
 	print()
