@@ -27,27 +27,7 @@ cmuk. shoes: take on life feet first.,5,3024000.0,20000,1
 ```
 ## Model
 To model the success of Kickstarter projects I chose to use a neural network. My motivations behind this were twofold: I had no initial hypothesis about the relationship between the features and success and I have been wanting to learn the TensorFlow and Keras libraries for a while. As mentioned above, I chose to use Kickstarter category, duration of fundraising, and USD goal as the features. My output is binary: did the project succeed or fail at being funded. Prior to training the model, I loaded in the clean dataset and scaled the features using the `scale` function to the domain `[0,1]`. The doubles are then cast to numpy's `float32` and reformatted to arrays. After researching online, I found the reccommended activation function for keras models with binary output is a sigmoid. In the process of training my model, I wanted to determine the optimal tuning parameters. Unfortunately, with a time complexity of `O(n^x)` it was unrealistic to change more than one parameter. I chose to fix the batch size at `50`, the epochs at `1000` and the learning rate at `0.05`. I then varied the number of nodes in a single layer neural network from `1` to `101`. The error was computed using root mean squared and the loss was computed using keras' `binary_accuracy` function. The process, which was automated using the function `model_validate`, found the optimal number of nodes for my data and parameters to be `11`. I then retrained the model with the optimal parameters, but set the epochs to `10,000` to allow for more learning. The final accuracy of the model is approximately `0.65`. This model was then stored for later use.
-
 ## Predict
-To predict the success of a Kickstarter project, my project scrapes data from the the Kickstarter website and runs it through the trained model.
-#### get_page
-The `get_page` function returns the Kickstarter project data for the project most closely matching the search terms passed as a parameter. Since various Kickstarter pages have have differnt HTML layouts depending on how the browser and project author chose to format them I had difficulty creating a general scraper to pull data from the project page directly. However, the search projects page on Kickstarter is formatted consistently across all searches, so the `get_page` function pulls the raw JSON data returned as the result of a search. This has the added benifit of the a user only needing to know the relevant search terms to find their project, as opposed to a complete URL.
-```
-def get_page(title):
-	data = {'name': '',
-			'category': '',
-			'duration': '',
-			'goal': ''}
-	request_string = 'https://www.kickstarter.com/projects/search.json?search=&term={}'.format('-'.join(title.split(' ')))
-	page = requests.get(request_string)
-	response = page.json()
-	if response['total_hits'] == 0:
-		return -1
-	else:
-		project = response['projects'][0]
-		data['name'] = project['name']
-		data['category'] = get_category(project['category']['slug'].split('/')[0])
-		data['duration'] = np.float32(project['deadline'] - project['launched_at'])
-		data['goal'] = np.float32(project['goal'])
-		return data 
-```
+To predict the success of a given Kickstarter project, I first had to get the project data. To accomplish this I used a helper function, `get_page`. Given a search term, the function returns the data for the Kickstarter project most closely matching the term. I chose to use closest match as opposed to a URL because the format of individual Kickstarter pages can vary greatly. Variables like the browser or the author's chosen format can change where data is located on the page and makes it difficult to scrape reliably. A page that never changes however is the Kickstarter search results page. This page alway returns a JSON object of a particular format. The `get_page` function queries this JSON object to extract the data, which is recast to numpy's `float32` and reformatted to an array. I then apply the same `scale` function from earlier so that the prediction inputs are analagous to the model training data. The `predict` function then loads the model I trained earlier and returns the probability of success.
+## UI
+Originally, this project had a front-end built as a RESTful web application, which communicated with a Python Flask server to predict project success. As I have developped the project on my own, I have moved away from the RESTful front end, as this is not my forte nor the focus of this particular project. In my api file, `kickhelp.py`, I have written a simple command line client to allow for the prediction of project success.
