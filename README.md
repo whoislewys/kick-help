@@ -71,7 +71,7 @@ CATEGORIES = ['games',
 			'journalism']
 
 #####################################
-#		   CLEAN FUNCTIONS          #
+#	   CLEAN FUNCTIONS          #
 #####################################
 
 # clean data set
@@ -149,7 +149,7 @@ def make_project(name, category, duration, goal, outcome):
 	return data
 
 #####################################
-#		   TRAIN FUNCTIONS          #
+#	   TRAIN FUNCTIONS          #
 #####################################
 
 # load data from clean
@@ -225,7 +225,7 @@ def model_validate(x_train, y_train, batch_size, epochs, lr, min_nodes, max_node
 	return opt_nodes, max_accuracy
 
 #####################################
-#		 PREDICT FUNCTIONS          #
+#	 PREDICT FUNCTIONS          #
 #####################################
 
 # scrape kickstarter
