@@ -40,10 +40,7 @@ To model the success of Kickstarter projects I chose to use a neural network. My
   .  
   .  
   .  
-  .  
-  .  
-  .  
-  .  
+  
 Since I was looking for the highest accuracy, I inverted the results so that my plot matched the typical U-shaped plots from class. As you can see, the optimal number of nodes for my data and parameters is `11`. I then retrained the model with the optimal parameters, but set the epochs to `10,000` to allow for more learning. The final accuracy of the model is approximately `0.65`. This model was then stored for later use.
 ## Predict
 To predict the success of a given Kickstarter project, I first had to get the project data. To accomplish this I used a helper function, `get_page`. Given a search term, the function returns the data for the Kickstarter project most closely matching the term. I chose to use closest match as opposed to a URL because the format of individual Kickstarter pages can vary greatly. Variables like the browser or the author's chosen format can change where data is located on the page and makes it difficult to scrape reliably. A page that never changes however is the Kickstarter search results page. This page alway returns a JSON object of a particular format. The `get_page` function queries this JSON object to extract the data, which is recast to numpy's `float32` and reformatted to an array. I then apply the same `scale` function from earlier so that the prediction inputs are analagous to the model training data. The `predict` function then loads the model I trained earlier and returns the probability of project success.
