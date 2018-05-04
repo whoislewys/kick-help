@@ -36,6 +36,7 @@ To predict the success of a given Kickstarter project, I first had to get the pr
 ## UI
 Originally, this project had a front-end built as a RESTful web application, which communicated with a Python Flask server to predict project success. As I have developped the project on my own, I have moved away from the RESTful front end, as this is not my forte nor the focus of this particular project. In my api file, `kickhelp.py`, I have written a simple command line client to allow for the prediction of project success.
 ## Challenges and Improvements
+The first improvement I would like to make would be the integration of undirected machine learning to quantify the project descriptions. I attempted to implement a rudimentary version using the `word2vec` library; however, I was unable to succesfully integrate this into my model. I would guess that the compellingness of a description affects whether people pledge or not, so I am likely losing important information by not including this feature in my model.
 ## Code
 Below is the code I wrote for this project.
 ```
