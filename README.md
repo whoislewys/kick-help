@@ -28,7 +28,25 @@ cmuk. shoes: take on life feet first.,5,3024000.0,20000,1
 ## Model
 To model the success of Kickstarter projects I chose to use a neural network. My motivations behind this were twofold: I had no initial hypothesis about the relationship between the features and success and I have been wanting to learn the TensorFlow and Keras libraries for a while. As mentioned above, I chose to use Kickstarter category, duration of fundraising, and USD goal as the features. My output is binary: did the project succeed or fail at being funded. Prior to training the model, I loaded in the clean dataset and scaled the features using the `scale` function to the domain `[0,1]`. The doubles are then cast to numpy's `float32` and reformatted to arrays. After researching online, I found the reccommended activation function for keras models with binary output is a sigmoid. In the process of training my model, I wanted to determine the optimal tuning parameters. Unfortunately, with a time complexity of `O(n^c)` it was unrealistic to change more than one parameter. I chose to fix the batch size at `50`, the epochs at `1000` and the learning rate at `0.05`. I then varied the number of nodes in a single layer neural network from `1` to `101`. The error was computed using root mean squared and the loss was computed using keras' `binary_accuracy` function. Below is a plot of the model accuracy vs. the number of the nodes.  
 
-<img src="https://github.com/whoislewys/kick-help/blob/stp-598/kick_help_api/model_accuracy.png"/>  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
 Since I was looking for the highest accuracy, I inverted the results so that my plot matched the typical U-shaped plots from class. As you can see, the optimal number of nodes for my data and parameters is `11`. I then retrained the model with the optimal parameters, but set the epochs to `10,000` to allow for more learning. The final accuracy of the model is approximately `0.65`. This model was then stored for later use.
 ## Predict
