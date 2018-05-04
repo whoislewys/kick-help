@@ -297,4 +297,4 @@ if __name__ == '__main__':
 	url = input('Enter Project Title: ').lower()
 	print('Predicting...\n')
 	predict(url)
-  ```
+```
